@@ -1,0 +1,10 @@
+{
+	"connection_timeout" : 3,
+	"database_name" : "database",
+	"max_connections" : 1,
+	"min_idle_count" : 2,
+	"path" : "path",
+	"tls" : "tls",
+	"url" : "url",
+	"wallet_scheme" : "scheme"
+}

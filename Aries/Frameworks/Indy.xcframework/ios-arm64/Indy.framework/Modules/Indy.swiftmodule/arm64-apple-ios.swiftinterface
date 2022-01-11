@@ -1,62 +1,10 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.5.2 effective-4.2 (swiftlang-1300.0.47.2 clang-1300.0.29.30)
+// swift-compiler-version: Apple Swift version 5.5.2 effective-4.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)
 // swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 4.2 -enforce-exclusivity=checked -O -module-name Indy
 import Foundation
 @_exported import Indy
 import Swift
 import _Concurrency
-public enum NonSecrets {
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func addRecord(to wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, value: Swift.String, tags: Swift.String) async -> Swift.Error?
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func updateRecordValue(in wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, value: Swift.String) async -> Swift.Error?
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func updateRecordTags(in wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, tags: Swift.String) async -> Swift.Error?
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func addRecordTags(in wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, tags: Swift.String) async -> Swift.Error?
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func deleteRecordTags(in wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, tags: Swift.String) async -> Swift.Error?
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func deleteRecord(to wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String) async -> Swift.Error?
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func getRecord(from wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, options: Swift.String) async -> Swift.Result<Swift.String, Swift.Error>
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func search(in wallet: Indy.IndyHandle, type: Swift.String, query: Swift.String, options: Swift.String) async -> Swift.Result<Indy.IndyHandle, Swift.Error>
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func `continue`(search: Indy.IndyHandle, in wallet: Indy.IndyHandle, count: Swift.Int) async -> Swift.Result<Swift.String, Swift.Error>
-  #endif
-
-  
-  #if compiler(>=5.3) && $AsyncAwait
-  public static func close(search: Indy.IndyHandle) async -> Swift.Error?
-  #endif
-
-}
 extension Swift.Dictionary {
   public mutating func merge(with dictionary: Swift.Dictionary<Key, Value>)
   public func toString() -> Swift.String?
@@ -64,37 +12,89 @@ extension Swift.Dictionary {
 public enum Wallet {
   
   #if compiler(>=5.3) && $AsyncAwait
-  public static func create(with config: Swift.String, _ credentials: Swift.String) async -> Swift.Error?
+  public static func create(with config: Swift.String, _ credentials: Swift.String) async throws
   #endif
 
   
   #if compiler(>=5.3) && $AsyncAwait
-  public static func open(with config: Swift.String, _ credentials: Swift.String) async -> Swift.Result<Indy.IndyHandle, Swift.Error>
+  public static func open(with config: Swift.String, _ credentials: Swift.String) async throws -> Indy.IndyHandle
   #endif
 
   
   #if compiler(>=5.3) && $AsyncAwait
-  public static func close(for handle: Indy.IndyHandle) async -> Swift.Error?
+  public static func close(for handle: Indy.IndyHandle) async throws
   #endif
 
   
   #if compiler(>=5.3) && $AsyncAwait
-  public static func delete(with config: Swift.String, _ credentials: Swift.String) async -> Swift.Error?
+  public static func delete(with config: Swift.String, _ credentials: Swift.String) async throws
   #endif
 
   
   #if compiler(>=5.3) && $AsyncAwait
-  public static func export(for handle: Indy.IndyHandle, with config: Swift.String) async -> Swift.Error?
+  public static func export(for handle: Indy.IndyHandle, with config: Swift.String) async throws
   #endif
 
   
   #if compiler(>=5.3) && $AsyncAwait
-  public static func `import`(with config: Swift.String, _ credentials: Swift.String, importConfig: Swift.String) async -> Swift.Error?
+  public static func `import`(with config: Swift.String, _ credentials: Swift.String, importConfig: Swift.String) async throws
   #endif
 
   
   #if compiler(>=5.3) && $AsyncAwait
-  public static func generateKey(with config: Swift.String) async -> Swift.Result<Swift.String, Swift.Error>
+  public static func generateKey(with config: Swift.String) async throws -> Swift.String
+  #endif
+
+}
+public enum NonSecrets {
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func addRecord(to wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, value: Swift.String, tags: Swift.String) async throws
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func updateRecordValue(in wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, value: Swift.String) async throws
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func updateRecordTags(in wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, tags: Swift.String) async throws
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func addRecordTags(in wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, tags: Swift.String) async throws
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func deleteRecordTags(in wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, tags: Swift.String) async throws
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func deleteRecord(to wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String) async throws
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func getRecord(from wallet: Indy.IndyHandle, type: Swift.String, id: Swift.String, options: Swift.String) async throws -> Swift.String
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func search(in wallet: Indy.IndyHandle, type: Swift.String, query: Swift.String, options: Swift.String) async throws -> Indy.IndyHandle
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func `continue`(search: Indy.IndyHandle, in wallet: Indy.IndyHandle, count: Swift.Int) async throws -> Swift.String
+  #endif
+
+  
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func close(search: Indy.IndyHandle) async throws
   #endif
 
 }

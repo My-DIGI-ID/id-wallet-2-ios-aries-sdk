@@ -1,0 +1,11 @@
+{
+	"id" : "id",
+	"storage_config" : {
+		"database_name" : "database",
+		"path" : "path",
+		"tls" : "tls",
+		"url" : "url",
+		"wallet_scheme" : "scheme"
+	},
+	"storage_type" : "default"
+}

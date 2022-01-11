@@ -1,0 +1,7 @@
+{
+	"id" : "id",
+	"value" : "value",
+	"tags" : {
+		"tagName" : "tagValue"
+	}
+}

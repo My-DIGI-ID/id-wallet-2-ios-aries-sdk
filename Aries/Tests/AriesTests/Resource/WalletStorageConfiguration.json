@@ -1,0 +1,7 @@
+{
+	"database_name" : "database",
+	"path" : "path",
+	"tls" : "tls",
+	"url" : "url",
+	"wallet_scheme" : "scheme"
+}

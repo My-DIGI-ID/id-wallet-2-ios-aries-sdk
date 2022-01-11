@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/Indy-Swift.h</key>
 		<data>
-		IRqyarx51mNJke3SbpaN1Ohwxqo=
+		WbXi0swyycb2D87dh29gbglINMc=
 		</data>
 		<key>Headers/Indy.h</key>
 		<data>
@@ -22,11 +22,7 @@
 		</data>
 		<key>Headers/IndyCache.h</key>
 		<data>
-		CYE/funbqIXXh3p/LsCePvriYMs=
-		</data>
-		<key>Headers/IndyCallbacks.h</key>
-		<data>
-		G4h0PFne3MKk9NTvyev+ohC9h3c=
+		Kygc3GffO/VKJ1KPWwDEO2gPzG4=
 		</data>
 		<key>Headers/IndyCrypto.h</key>
 		<data>
@@ -64,10 +60,6 @@
 		<data>
 		2Dqze/kMZytLYhkfXQXKLigATAg=
 		</data>
-		<key>Headers/IndySequenceUtils.h</key>
-		<data>
-		KVQN5GM7x0HmnkLzrpsVLaHsjTw=
-		</data>
 		<key>Headers/IndyTypes.h</key>
 		<data>
 		FVFajzoPkArhj9sKqtfKr2umurw=
@@ -80,45 +72,33 @@
 		<data>
 		/sTxSY1LeXC5auZKQzfjfjrUOGk=
 		</data>
-		<key>Headers/NSDictionary+JSON.h</key>
-		<data>
-		U6U9sSmh3cscVqxczTNVw/RqJoE=
-		</data>
-		<key>Headers/NSError+IndyError.h</key>
-		<data>
-		3dCnoBIEU+nM5cbGrLba7/KpcTY=
-		</data>
-		<key>Headers/NSString+JSON.h</key>
-		<data>
-		S4GMrzDq2Ox5BSZqf1MqpRQuBII=
-		</data>
 		<key>Info.plist</key>
 		<data>
-		wK1mMdaENvKtg2/88mY1N3CDDEk=
+		JelljiD1O9BNi72jKLBlwffE9IQ=
 		</data>
 		<key>Modules/Indy.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		qda69jyWQ9wP5+AFbl9ldszALrg=
+		q9o6FZrU+UflG+exJjilTRr812g=
 		</data>
 		<key>Modules/Indy.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		jj1fD5rtW7ZgGV12XTg6UHX4JgU=
+		g9MAPQ3rBrt+VTd+ukexdtisiY0=
 		</data>
 		<key>Modules/Indy.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		N9tjzGS8WfOoq14zz1LomQ9ziqI=
+		A0oAdPjAPNEburynLsvMvuWW4N0=
 		</data>
 		<key>Modules/Indy.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		qda69jyWQ9wP5+AFbl9ldszALrg=
+		q9o6FZrU+UflG+exJjilTRr812g=
 		</data>
 		<key>Modules/Indy.swiftmodule/arm64.swiftinterface</key>
 		<data>
-		jj1fD5rtW7ZgGV12XTg6UHX4JgU=
+		g9MAPQ3rBrt+VTd+ukexdtisiY0=
 		</data>
 		<key>Modules/Indy.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		N9tjzGS8WfOoq14zz1LomQ9ziqI=
+		A0oAdPjAPNEburynLsvMvuWW4N0=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -131,7 +111,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			nAbHLJUl7mzZ59tO1lDLXStvhEFeSqecAoqVT/li5eI=
+			h/jsImAeKjMPNuM2CUDpo3hmfZaL0b/s9cdojljIiM8=
 			</data>
 		</dict>
 		<key>Headers/Indy.h</key>
@@ -159,14 +139,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Yla5r/LyqI/m3NlFhehX9IiVHQGIu2fIy/DB99KsOmo=
-			</data>
-		</dict>
-		<key>Headers/IndyCallbacks.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			uMqBzprVHl+JUItTAVUtMY6BB3S9Z/PJT5adQhY3oAg=
+			hDX7TjVJmsA2FlRi0ENmqCSchT0eroI4P6AUGbnkKfQ=
 			</data>
 		</dict>
 		<key>Headers/IndyCrypto.h</key>
@@ -232,13 +205,6 @@
 			wl0ebj4VlcFb7Qc4Kxk0PhRzJHWA9Ict9uLE4UgWsYY=
 			</data>
 		</dict>
-		<key>Headers/IndySequenceUtils.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			sj0JADXDDUWCIsY1ZPYVmBGtYaR5yjG4AHtXm8rzXdg=
-			</data>
-		</dict>
 		<key>Headers/IndyTypes.h</key>
 		<dict>
 			<key>hash2</key>
@@ -260,67 +226,46 @@
 			AO6Jil+LJS8Z85NVTmfto/S0vXY4C+WAFygJfZmEKUI=
 			</data>
 		</dict>
-		<key>Headers/NSDictionary+JSON.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			7U83Sv3pX6Bg44Pls/fmrZTD6dV1isg6m1ifDsa8xf8=
-			</data>
-		</dict>
-		<key>Headers/NSError+IndyError.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			K/31kLZv2AhD2Ze9indKHlq0E0CWpGaiX64OCZoxFxw=
-			</data>
-		</dict>
-		<key>Headers/NSString+JSON.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			z5/YTyT21Vlb/nACNnymv/+2HBxNcfdrEE4gavPx/uk=
-			</data>
-		</dict>
 		<key>Modules/Indy.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			D8qQt7CkQXj8Vm15iVdTNfIORsFzDfyZ8eeQS5TfU+I=
+			0vHB9NRrJFPQ5StCihQdNUo2YmfgJMwPLM2bbavnSmA=
 			</data>
 		</dict>
 		<key>Modules/Indy.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+e5xf7y2TxLN2Tcaz3P8V1gteCBBOH9ftSqNOGcLMLo=
+			GhWVjjwrYde90T0MlhQjV/9b+q39iWFz79YuL5MhPwQ=
 			</data>
 		</dict>
 		<key>Modules/Indy.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			rczJssDF6r8AsqINPBIS8S9f6RbemA43P1V45Xxeh4M=
+			5U/92kNUNUfXoVZs7+0+NwB0ZANK7fGZELL3qw7LIp0=
 			</data>
 		</dict>
 		<key>Modules/Indy.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			D8qQt7CkQXj8Vm15iVdTNfIORsFzDfyZ8eeQS5TfU+I=
+			0vHB9NRrJFPQ5StCihQdNUo2YmfgJMwPLM2bbavnSmA=
 			</data>
 		</dict>
 		<key>Modules/Indy.swiftmodule/arm64.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			+e5xf7y2TxLN2Tcaz3P8V1gteCBBOH9ftSqNOGcLMLo=
+			GhWVjjwrYde90T0MlhQjV/9b+q39iWFz79YuL5MhPwQ=
 			</data>
 		</dict>
 		<key>Modules/Indy.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			rczJssDF6r8AsqINPBIS8S9f6RbemA43P1V45Xxeh4M=
+			5U/92kNUNUfXoVZs7+0+NwB0ZANK7fGZELL3qw7LIp0=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

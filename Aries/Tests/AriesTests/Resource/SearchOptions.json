@@ -1,0 +1,7 @@
+{
+	"retrieveRecords" : true,
+	"retrieveTags" : true,
+	"retrieveTotalCount" : false,
+	"retrieveType" : false,
+	"retrieveValue" : true
+}
