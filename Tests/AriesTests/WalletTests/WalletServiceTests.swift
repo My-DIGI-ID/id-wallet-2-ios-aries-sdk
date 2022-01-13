@@ -14,11 +14,10 @@
 @testable import Aries
 import XCTest
 
-/// The tests for the wallet service are black box tests and implementation agnostic
-/// By defining them as open, we can create inheriting test cases for other
-/// implementations without the need to adapt the tests
+/// Test suite for the `WalletService`.
+/// Please refer to the documentation for custom implementations.
 open class WalletServiceTests: XCTestCase {
-    let walletService: WalletService = DefaultWalletService()
+    var walletService: WalletService = DefaultWalletService()
 
     func test_generate_key() async throws {
         // Act

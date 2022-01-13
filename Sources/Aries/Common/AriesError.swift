@@ -11,21 +11,11 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import Foundation
-
-extension JSONDecoder {
-    static let shared: JSONDecoder = {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-
-        return decoder
-    }()
-
-    func model<T: Decodable>(_ string: String) throws -> T {
-        guard let data = string.data(using: .utf8) else {
-            throw AriesError.decodingFailed("Decoder: " + string)
-        }
-
-        return try decode(T.self, from: data)
-    }
+/// Enumeration for all possible Aries errors with optional extra information.
+enum AriesError: Error {
+    case encoding(String)
+    case decoding(String)
+    case illegalState(String)
+    case indy(Error)
+    case transport(Error)
 }

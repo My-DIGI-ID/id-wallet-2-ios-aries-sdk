@@ -11,10 +11,11 @@
  * specific language governing permissions and limitations under the License.
  */
 
-/// Enumeration for all possible Aries errors with optional extra information.
-///
-/// - ToDo: Potentially extend with Indy errors for better traceability.
-enum AriesError: Error {
-    case encodingFailed(String)
-    case decodingFailed(String)
+@testable import Aries
+import XCTest
+
+/// Test suite for the `MessageService`.
+/// Please refer to the documentation for custom implementations.
+open class MessageServiceTests: XCTestCase {
+    var service: MessageService = DefaultMessageService()
 }

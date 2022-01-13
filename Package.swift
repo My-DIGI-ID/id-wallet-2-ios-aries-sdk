@@ -8,7 +8,7 @@ let package = Package(
     products: [
         .library(
             name: "Aries",
-            targets: ["Aries"]
+            targets: ["Aries", "AriesTests"]
         ),
     ],
     targets: [

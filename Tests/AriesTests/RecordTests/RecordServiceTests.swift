@@ -14,16 +14,15 @@
 @testable import Aries
 import XCTest
 
-/// The tests for the record service are black box tests and implementation agnostic
-/// By defining them as open, we can create inheriting test cases for other
-/// implementations without the need to adapt the tests
+/// Test suite for the `RecordService`.
+/// Please refer to the documentation for custom implementations.
 open class RecordServiceTests: XCTestCase {
     let config = WalletConfiguration(id: UUID().uuidString)
     let creds = WalletCredentials(key: "test")
     let walletService: WalletService = DefaultWalletService()
     var wallet: Wallet!
 
-    let recordService: RecordService = DefaultRecordService()
+    var recordService: RecordService = DefaultRecordService()
 
     override open func setUp() async throws {
         try await walletService.create(for: config, creds)

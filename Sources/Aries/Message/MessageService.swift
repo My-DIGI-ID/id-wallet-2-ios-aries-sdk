@@ -13,21 +13,13 @@
 
 import Foundation
 
-extension JSONEncoder {
-    static let shared: JSONEncoder = {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
-        return encoder
-    }()
-
-    func string<T: Encodable>(_ value: T) throws -> String {
-        let data = try encode(value)
-
-        guard let string = String(data: data, encoding: .utf8) else {
-            throw AriesError.encodingFailed("Encoder: \(value)")
-        }
-
-        return string
-    }
+protocol MessageService {
+    /// Send a (encrypted) message to another agent.
+    ///
+    /// - Parameters:
+    /// 	- message: The message to be sent.
+    /// 	- endpoint: The destination of the message.
+    ///
+    ///  - Returns: The (encrypted) response message, if there is any.
+    func send(_ message: Data, to endpoint: String) async throws -> Data?
 }
