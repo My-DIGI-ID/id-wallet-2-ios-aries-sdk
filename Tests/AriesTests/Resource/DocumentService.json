@@ -1,0 +1,8 @@
+{
+	"id": "id",
+	"recipientKeys": ["recipientKeys"],
+	"routingKeys": ["routingKeys"],
+	"serviceEndpoint": "endpoint",
+	"type": "IndyAgent"
+}
+

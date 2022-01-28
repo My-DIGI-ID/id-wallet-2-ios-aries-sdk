@@ -1,0 +1,9 @@
+{
+	"@id": "id",
+	"@type": "https://didcomm.org/connections/1.0/request",
+	"connection": {
+		"DID": "did"
+	},
+	"imageUrl": "imageUrl",
+	"label": "label"
+}

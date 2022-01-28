@@ -11,16 +11,23 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+/// Container representing a DID with all its documented information.
+public struct Connection: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case did = "DID"
+        case document = "DIDDoc"
+    }
 
-    case invalidKey(String)
-	case invalidSignature
+    /// The DID of the connection partner.
+	public let did: String
+	/// The DID document representing all available information about the subject.
+	public let document: Document?
+
+	init(
+		did: String,
+		document: Document? = nil
+	) {
+		self.did = did
+		self.document = document
+	}
 }

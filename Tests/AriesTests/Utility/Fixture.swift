@@ -11,16 +11,10 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
-
-    case invalidKey(String)
-	case invalidSignature
+enum Fixture {
+	static var verkeyRandom: String { [verkey0, verkey1, verkey2, verkey3].randomElement()! }
+	static let verkey0 = "CnEDk9HrMnmiHXEV1WFgbVCRteYnPqsJwrTdcZaNhFVW"
+	static let verkey1 = "GjZWsBLgZCR18aL468JAT7w9CZRiBnpxUPPgyQxh4voa"
+	static let verkey2 = "kqa2HyagzfMAq42H5f9u3UMwnSBPQx2QfrSyXbUPxMn"
+	static let verkey3 = "GJ1SzoWzavQYfNL9XkaJdrQejfztN4XqdsiV4ct3LXKL"
 }

@@ -1,15 +1,17 @@
-/*
- * Copyright 2021 Bundesrepublik Deutschland
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License.
- */
+//
+// Copyright 2022 Bundesrepublik Deutschland
+//
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations under the License.
+//
+
+import Indy
 
 /// Service for all operations that process records.
 public protocol RecordService {
@@ -26,7 +28,7 @@ public protocol RecordService {
     /// 	- type: The class of the record to get
     /// 	- id: The unique id of the record
     /// 	- wallet: The wallet where the record is stored
-    func get<T: Record>(_ type: T.Type, for id: String, from wallet: Wallet) async throws -> T
+    func get<T: Record>(_: T.Type, for id: String, from wallet: Wallet) async throws -> T
 
     /// Override an existing record with the same type and id in the referenced wallet.
     ///
@@ -41,7 +43,7 @@ public protocol RecordService {
     /// 	- type: The class of the record to be deleted
     /// 	- id: The unique id of the record
     /// 	- wallet: The wallet where the record should be deleted from
-    func delete<T: Record>(_ type: T.Type, with id: String, in wallet: Wallet) async throws
+    func delete<T: Record>(_: T.Type, with id: String, in wallet: Wallet) async throws
 
     /// Search in the wallet for records of a specific type, optionally with a filter query and specific ranges.
     ///
@@ -52,7 +54,7 @@ public protocol RecordService {
     ///		- count: The maximum amount of records to be fetched.
     ///		- skip: The amout of records to be skipped.
     func search<T: Record>(
-        _ type: T.Type,
+        _: T.Type,
         in wallet: Wallet,
         with query: SearchQuery,
         count: Int?,

@@ -1,0 +1,10 @@
+{
+	"@id": "id",
+	"@type": "https://didcomm.org/connections/1.0/response",
+	"connection~sig": {
+		"@type": "type",
+		"sig_data": "data",
+		"signature": "signature",
+		"signer": "signer"
+	}
+}

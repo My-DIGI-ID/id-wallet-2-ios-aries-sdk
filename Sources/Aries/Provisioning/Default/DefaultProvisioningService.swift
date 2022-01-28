@@ -11,16 +11,19 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+class DefaultProvisioningService: ProvisioningService {
 
-    case invalidKey(String)
-	case invalidSignature
+	private let recordService: RecordService
+
+	init(recordService: RecordService) {
+		self.recordService = recordService
+	}
+
+	func getRecord(from wallet: Wallet) async throws -> ProvisioningRecord {
+		try await recordService.get(
+			ProvisioningRecord.self,
+			for: ProvisioningRecord.uniqueId,
+			from: wallet
+		)
+	}
 }

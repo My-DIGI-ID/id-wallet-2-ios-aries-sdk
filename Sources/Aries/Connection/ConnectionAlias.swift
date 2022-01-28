@@ -11,16 +11,18 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+/// This is a structure useful for presenting the participants of a connection.
+public struct ConnectionAlias: Codable {
+	/// Name of the connection participant.
+	public let name: String?
+	/// URL to a profile image of the connection participant.
+	public let imageUrl: String?
 
-    case invalidKey(String)
-	case invalidSignature
+	public init(
+		name: String? = nil,
+		imageUrl: String? = nil
+	) {
+		self.name = name
+		self.imageUrl = imageUrl
+	}
 }

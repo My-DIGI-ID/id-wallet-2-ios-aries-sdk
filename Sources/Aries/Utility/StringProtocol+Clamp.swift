@@ -11,16 +11,14 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
-
-    case invalidKey(String)
-	case invalidSignature
+extension StringProtocol {
+    func clamp(to length: Int, with filler: String = " ") -> String {
+        if count > length {
+            return String(prefix(length))
+        } else if count < length {
+            return padding(toLength: length, withPad: filler, startingAt: 0)
+        } else {
+            return String(self)
+        }
+    }
 }

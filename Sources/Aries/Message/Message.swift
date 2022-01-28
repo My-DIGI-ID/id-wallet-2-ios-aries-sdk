@@ -11,16 +11,15 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+import Foundation
 
-    case invalidKey(String)
-	case invalidSignature
+/// Basic container for messages that get sent between agents.
+///
+/// When coding custom message types, id and type must be prefixed with @
+/// as these are reserved names.
+///
+/// Todo: Add decorators, encoded decorators need to prefix their name with ~.
+public protocol Message: Codable {
+	var id: String { get }
+	var type: String { get }
 }

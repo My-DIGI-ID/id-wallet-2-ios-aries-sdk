@@ -1,0 +1,6 @@
+{
+	"@type": "type",
+	"sig_data": "data",
+	"signature": "signature",
+	"signer": "signer"
+}

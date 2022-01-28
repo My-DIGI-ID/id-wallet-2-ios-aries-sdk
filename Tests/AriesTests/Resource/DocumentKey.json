@@ -1,0 +1,7 @@
+{
+	"controller": ["controller"],
+	"id": "id",
+	"publicKeyBase58": "key",
+	"type": "type"
+}
+

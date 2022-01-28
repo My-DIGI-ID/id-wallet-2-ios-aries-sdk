@@ -11,16 +11,18 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+import Foundation
 
-    case invalidKey(String)
-	case invalidSignature
+extension Date {
+    /// Convert to Unix timestamp in milliseconds represented as long
+    func toUInt64() -> UInt64 {
+        UInt64(timeIntervalSince1970 * 1000)
+    }
+}
+
+extension UInt64 {
+    /// Convert Unix timestamp in milliseconds to its Date representation
+    func toDate() -> Date {
+        Date(timeIntervalSince1970: Double(self) / 1000.0)
+    }
 }

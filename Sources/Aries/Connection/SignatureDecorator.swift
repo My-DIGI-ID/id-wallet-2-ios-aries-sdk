@@ -11,16 +11,21 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+/// Container for signature related data.
+public struct SignatureDecorator: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case type = "@type"
+        case data = "sig_data"
+        case signer
+        case signature
+    }
 
-    case invalidKey(String)
-	case invalidSignature
+	/// Type of the signature
+	public let type: String
+	/// The signed data.
+	public let data: String
+	/// The identity (key) of the signer.
+	public let signer: String
+	/// The actual signature.
+	public let signature: String
 }

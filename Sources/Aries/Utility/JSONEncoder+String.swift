@@ -11,16 +11,23 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+import Foundation
 
-    case invalidKey(String)
-	case invalidSignature
+extension JSONEncoder {
+    static let shared: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+        return encoder
+    }()
+
+    func string<T: Encodable>(_ value: T) throws -> String {
+        let data = try encode(value)
+
+        guard let string = String(data: data, encoding: .utf8) else {
+            throw AriesError.encoding("Encoder: \(value)")
+        }
+
+        return string
+    }
 }

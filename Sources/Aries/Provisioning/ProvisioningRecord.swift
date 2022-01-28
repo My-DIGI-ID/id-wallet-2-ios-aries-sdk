@@ -11,16 +11,23 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+import Foundation
 
-    case invalidKey(String)
-	case invalidSignature
+public struct ProvisioningRecord: Record {
+	public static let uniqueId: String = "SingleRecord"
+	public static let type: String = "ProvisioningRecord"
+
+	public var id: String { Self.uniqueId }
+	public var tags: [String: String] = [:]
+
+	public let owner: Owner?
+	public let endpoint: Endpoint?
+
+	init(
+		owner: Owner? = nil,
+		endpoint: Endpoint? = nil
+	) {
+		self.owner = owner
+		self.endpoint = endpoint
+	}
 }

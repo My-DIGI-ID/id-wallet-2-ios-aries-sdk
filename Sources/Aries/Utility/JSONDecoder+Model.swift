@@ -11,16 +11,21 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+import Foundation
 
-    case invalidKey(String)
-	case invalidSignature
+extension JSONDecoder {
+    static let shared: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+
+        return decoder
+    }()
+
+    func model<T: Decodable>(_ string: String) throws -> T {
+        guard let data = string.data(using: .utf8) else {
+            throw AriesError.decoding("Decoder: " + string)
+        }
+
+        return try decode(T.self, from: data)
+    }
 }

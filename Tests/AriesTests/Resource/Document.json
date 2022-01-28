@@ -1,0 +1,9 @@
+{
+	"@context": ["https://w3id.org/did/v1"],
+	"alsoKnownAs": ["alsoKnownAs"],
+	"controller": ["controller"],
+	"id": "id",
+	"publicKey": [],
+	"service": []
+}
+

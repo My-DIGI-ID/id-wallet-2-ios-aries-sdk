@@ -11,16 +11,16 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
-
-    case invalidKey(String)
-	case invalidSignature
+enum Tags {
+	static let nonce = "nonce"
+	static let did = "did"
+	static let alias = "alias"
+	static let connectionKey = "connectionKey"
+	static let issuerDid = "issuerDid"
+	static let autoAccept = "autoAcceptConnection"
+	static let role = "role"
+	static let issuer = "issuer"
+	static let holder = "holder"
+	static let requestor = "requestor"
+	static let lastThreadId = "threadId"
 }

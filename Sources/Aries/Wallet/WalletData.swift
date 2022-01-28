@@ -11,16 +11,5 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
-
-    case invalidKey(String)
-	case invalidSignature
-}
+/// Data used for fully identifing and accessing wallets.
+public protocol WalletData {}

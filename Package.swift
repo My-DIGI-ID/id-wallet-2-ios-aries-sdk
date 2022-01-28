@@ -1,5 +1,7 @@
 // swift-tools-version:5.5
 
+// swiftlint:disable line_length
+
 import PackageDescription
 
 let package = Package(
@@ -9,22 +11,24 @@ let package = Package(
         .library(
             name: "Aries",
             targets: ["Aries"]
-        ),
+        )
     ],
+	dependencies: [
+		.package(
+            name: "Indy",
+            url: "https://eu-de.git.cloud.ibm.com/blockchain-practice-dach/projects/ssi-bundeskanzleramt/id-wallet/ios-indy-sdk",
+            branch: "development"
+        )
+	],
     targets: [
         .target(
             name: "Aries",
-            dependencies: ["Indy"]
-        ),
-        .binaryTarget(
-            name: "Indy",
-            path: "Frameworks/Indy.xcframework"
+			dependencies: ["Indy"]
         ),
         .testTarget(
             name: "AriesTests",
             dependencies: ["Aries"],
-            // We are not allowed to name a resource folder "Resources"?!
-            resources: [.copy("Resource")]
-        ),
+			resources: [.copy("Resource")]
+        )
     ]
 )

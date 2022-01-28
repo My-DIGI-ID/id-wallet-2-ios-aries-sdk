@@ -1,0 +1,9 @@
+{
+	"@id": "id",
+	"@type": "https://didcomm.org/connections/1.0/invitation",
+	"imageUrl": "imageUrl",
+	"label": "label",
+	"recipientKeys": ["recipientKeys"],
+	"routingKeys": ["routingKeys"],
+	"serviceEndpoint": "endpoint"
+}

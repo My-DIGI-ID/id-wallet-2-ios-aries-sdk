@@ -10,17 +10,12 @@
 // an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 //
+import XCTest
 
-/// Enumeration for all possible Aries errors with optional extra information.
-public enum AriesError: Error {
-	case invalidType(String)
-    case encoding(String)
-    case decoding(String)
-    case illegalResult(String)
-    case transport(Error)
-    case illegalState(String)
-    case notFound(String)
+extension XCTestCase {
 
-    case invalidKey(String)
-	case invalidSignature
+    func loadJson(_ name: String) throws -> String {
+        let path = Bundle.module.path(forResource: name, ofType: "json", inDirectory: "Resource")!
+        return try String(contentsOfFile: path).filter { !$0.isWhitespace }
+    }
 }
