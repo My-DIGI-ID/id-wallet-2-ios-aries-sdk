@@ -61,7 +61,7 @@ class WalletServiceTests: XCTestCase {
 
 		XCTAssertNotNil(wallet)
 
-        assert(wallet! != 0)
+        assert(wallet != 0)
 
         try await walletService.close(wallet!)
 

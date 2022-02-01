@@ -42,7 +42,7 @@ enum SignatureUtil {
 
 	static func verify(_ decorator: SignatureDecorator) async throws -> Data {
 		guard let signature = Data(base64Encoded: decorator.signature),
-                let signatureData = Data(base64Encoded: decorator.data) else {
+            let signatureData = Data(base64Encoded: decorator.data) else {
 			throw AriesError.decoding("Signature")
 		}
 

@@ -40,6 +40,7 @@ class ConnectionServiceTests: XCTestCase {
 	var wallet1: Wallet!
 
 	override open func setUp() async throws {
+        try await super.setUp()
 		try await walletService.create(for: walletData0)
 		wallet0 = try await walletService.get(for: walletData0)
 
@@ -48,11 +49,12 @@ class ConnectionServiceTests: XCTestCase {
 	}
 
 	override open func tearDown() async throws {
-		try await walletService.close(wallet0!)
+        try await super.tearDown()
+		try await walletService.close(wallet0)
 		try await walletService.delete(for: walletData0)
 		wallet0 = nil
 
-		try await walletService.close(wallet1!)
+		try await walletService.close(wallet1)
 		try await walletService.delete(for: walletData1)
 		wallet1 = nil
 	}

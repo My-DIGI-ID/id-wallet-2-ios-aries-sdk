@@ -35,6 +35,12 @@ struct TestRecord: Record {
 }
 
 extension TestRecord: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case created
+        case updated
+    }
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let createdTS = try container.decode(UInt64.self, forKey: .created)
@@ -50,11 +56,5 @@ extension TestRecord: Codable {
         try container.encode(id, forKey: .id)
         try container.encode(created.toUInt64(), forKey: .created)
         try container.encodeIfPresent(updated?.toUInt64(), forKey: .updated)
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case created
-        case updated
     }
 }

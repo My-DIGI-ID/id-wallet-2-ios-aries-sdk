@@ -32,13 +32,15 @@ open class CryptoServiceTests: XCTestCase {
 	lazy var service: CryptoService = DefaultCryptoService()
 
 	override open func setUp() async throws {
+        try await super.setUp()
 		try await walletService.create(for: walletData)
 		wallet = try await walletService.get(for: walletData)
 	}
 
 	override open func tearDown() async throws {
-		try await walletService.close(wallet!)
+		try await walletService.close(wallet)
 		try await walletService.delete(for: walletData)
+        try await super.tearDown()
 	}
 
 	func test_pack() async throws {

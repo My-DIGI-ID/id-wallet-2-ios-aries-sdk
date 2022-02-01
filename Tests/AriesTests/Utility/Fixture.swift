@@ -12,7 +12,7 @@
 //
 
 enum Fixture {
-	static var verkeyRandom: String { [verkey0, verkey1, verkey2, verkey3].randomElement()! }
+    static var verkeyRandom: String { [verkey0, verkey1, verkey2, verkey3].randomElement()! }
 	static let verkey0 = "CnEDk9HrMnmiHXEV1WFgbVCRteYnPqsJwrTdcZaNhFVW"
 	static let verkey1 = "GjZWsBLgZCR18aL468JAT7w9CZRiBnpxUPPgyQxh4voa"
 	static let verkey2 = "kqa2HyagzfMAq42H5f9u3UMwnSBPQx2QfrSyXbUPxMn"

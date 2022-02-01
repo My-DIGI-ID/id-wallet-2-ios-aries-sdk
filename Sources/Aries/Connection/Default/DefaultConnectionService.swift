@@ -212,8 +212,8 @@ class DefaultConnectionService: ConnectionService {
 		connection.myVerkey = verkey
 		connection.state = .negotiating
 		connection.endpoint = Endpoint(
-			uri: invitation.endpoint,
-			did: nil,
+            uri: invitation.endpoint,
+            did: nil,
             verkeys: routingKeys ?? []
 		)
 		if invitation.label?.isEmpty == false || invitation.imageUrl?.isEmpty == false {

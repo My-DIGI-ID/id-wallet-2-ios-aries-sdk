@@ -29,14 +29,16 @@ class RecordServiceTests: XCTestCase {
     lazy var recordService: RecordService = DefaultRecordService()
 
     override open func setUp() async throws {
+        try await super.setUp()
         try await walletService.create(for: walletData)
         wallet = try await walletService.get(for: walletData)
     }
 
     override open func tearDown() async throws {
-        try await walletService.close(wallet!)
+        try await walletService.close(wallet)
         try await walletService.delete(for: walletData)
         wallet = nil
+        try await super.tearDown()
     }
 
     func test_store_and_retrieve_record_with_tags() async throws {

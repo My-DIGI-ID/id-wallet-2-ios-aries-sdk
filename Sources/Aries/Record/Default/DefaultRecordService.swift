@@ -28,8 +28,8 @@ class DefaultRecordService: RecordService {
             to: wallet,
             type: T.type,
             id: record.id,
-			value: try JSONEncoder.shared.string(record),
-			tags: record.tags
+            value: try JSONEncoder.shared.string(record),
+            tags: record.tags
         )
     }
 
@@ -62,14 +62,14 @@ class DefaultRecordService: RecordService {
             in: wallet,
             type: T.type,
             id: record.id,
-			value: try JSONEncoder.shared.string(record)
+            value: try JSONEncoder.shared.string(record)
         )
 
         try await NonSecrets.updateRecordTags(
             in: wallet,
             type: T.type,
             id: record.id,
-			tags: record.tags
+            tags: record.tags
         )
     }
 

@@ -22,17 +22,17 @@ extension ConnectionRecord {
 			keys: [
 				DocumentKey(
                     id: myDid.map { $0 + "#keys-1" } ?? "",
-					type: Self.defaultType,
+                    type: Self.defaultType,
                     controller: myDid.map { [$0] },
-					key: myVerkey ?? ""
+                    key: myVerkey ?? ""
 				)
 			],
 			services: [
 				DocumentService(
                     id: myDid.map { $0 + ";indy" } ?? "",
                     recipientKeys: myVerkey.map { [$0] } ?? [],
-					routingKeys: record.endpoint?.verkeys ?? [],
-					endpoint: record.endpoint?.uri ?? ""
+                    routingKeys: record.endpoint?.verkeys ?? [],
+                    endpoint: record.endpoint?.uri ?? ""
 				)
 			]
 		)
@@ -43,18 +43,18 @@ extension ConnectionRecord {
 			id: theirDid ?? "",
 			keys: [
 				DocumentKey(
-					id: theirDid.map { $0 + "#keys-1" } ?? "",
-					type: Self.defaultType,
+                    id: theirDid.map { $0 + "#keys-1" } ?? "",
+                    type: Self.defaultType,
                     controller: theirDid.map { [$0] },
-					key: theirVerkey ?? ""
+                    key: theirVerkey ?? ""
 				)
 			],
 			services: [
 				DocumentService(
-					id: theirDid.map { $0 + ";indy" } ?? "",
+                    id: theirDid.map { $0 + ";indy" } ?? "",
                     recipientKeys: theirVerkey.map { [$0] } ?? [],
                     routingKeys: endpoint?.verkeys ?? [],
-					endpoint: endpoint?.uri ?? ""
+                    endpoint: endpoint?.uri ?? ""
 				)
 			]
 		)

@@ -1,7 +1,5 @@
 // swift-tools-version:5.5
 
-// swiftlint:disable line_length
-
 import PackageDescription
 
 let package = Package(
@@ -23,12 +21,12 @@ let package = Package(
     targets: [
         .target(
             name: "Aries",
-			dependencies: ["Indy"]
+            dependencies: ["Indy"]
         ),
         .testTarget(
             name: "AriesTests",
             dependencies: ["Aries"],
-			resources: [.copy("Resource")]
+            resources: [.copy("Resource")]
         )
     ]
 )

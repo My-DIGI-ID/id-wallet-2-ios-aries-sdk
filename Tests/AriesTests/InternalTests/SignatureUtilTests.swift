@@ -22,9 +22,10 @@ class SignatureUtilTests: XCTestCase {
 		credentials: WalletCredentials(key: "test")
 	)
 	let walletService = DefaultWalletService()
-	var wallet: IndyHandle!
+    var wallet: IndyHandle!
 
 	override open func setUp() async throws {
+        try await super.setUp()
 		try await walletService.create(for: walletData)
 		wallet = try await walletService.get(for: walletData) as? IndyHandle
 	}
@@ -33,6 +34,7 @@ class SignatureUtilTests: XCTestCase {
 		try await walletService.close(wallet!)
 		try await walletService.delete(for: walletData)
 		wallet = nil
+        try await super.tearDown()
 	}
 
 	func test_sign_and_verify() async throws {

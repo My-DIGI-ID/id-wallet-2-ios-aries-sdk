@@ -22,7 +22,7 @@ class ProvisioningServiceTests: XCTestCase {
 		credentials: WalletCredentials(key: "test")
 	)
 
-	var wallet: IndyHandle!
+    var wallet: IndyHandle!
 	lazy var walletService = DefaultWalletService()
 	lazy var recordService: RecordService = DefaultRecordService()
 	lazy var service: ProvisioningService = DefaultProvisioningService(
@@ -30,6 +30,7 @@ class ProvisioningServiceTests: XCTestCase {
 	)
 
 	override open func setUp() async throws {
+        try await super.setUp()
 		try await walletService.create(for: walletData)
 		wallet = try await walletService.get(for: walletData) as? IndyHandle
 	}
@@ -38,6 +39,7 @@ class ProvisioningServiceTests: XCTestCase {
 		try await walletService.close(wallet!)
 		try await walletService.delete(for: walletData)
 		wallet = nil
+        try await super.tearDown()
 	}
 
 	func test_get_record() async throws {
