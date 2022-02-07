@@ -11,9 +11,12 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Aries
+import Foundation
 
-struct TestMessage: Message {
-	let id: String
-    let type: String
+public enum CredentialState: Codable {
+    case offered
+    case requested
+    case issued
+    case rejected
+    case revoked
 }

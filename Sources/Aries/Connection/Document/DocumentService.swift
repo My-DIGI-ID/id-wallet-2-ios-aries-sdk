@@ -16,8 +16,10 @@ public struct DocumentService: Codable {
     private enum CodingKeys: String, CodingKey {
         case id
         case type
+        case priority
         case recipientKeys
         case routingKeys
+        case accept
         case endpoint = "serviceEndpoint"
     }
 
@@ -25,23 +27,20 @@ public struct DocumentService: Codable {
 	public let id: String
 	/// The type of the service. Should be registered in the specification registries.
 	public let type: String
-	/// The actual uri to send messages to.
-	public let endpoint: String
+    ///
+    public var priority: Int?
 	/// The public keys of the recipients.
-	public let recipientKeys: [String]
+	public var recipientKeys: [String]?
 	/// The public keys of the routing points.
-	public let routingKeys: [String]
-
-	init(
-		id: String,
-		recipientKeys: [String],
-		routingKeys: [String],
-		endpoint: String
-	) {
+	public var routingKeys: [String]?
+    /// 
+    public var accept: [String]?
+    /// The actual uri to send messages to.
+    public var endpoint: String
+    
+	init(id: String, endpoint: String) {
 		self.id = id
 		self.type = "IndyAgent"
-		self.recipientKeys = recipientKeys
-		self.routingKeys = routingKeys
 		self.endpoint = endpoint
 	}
 }

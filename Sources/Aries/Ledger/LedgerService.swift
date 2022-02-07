@@ -11,21 +11,10 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Container for signature related data.
-public struct SignatureDecorator: Codable {
-    private enum CodingKeys: String, CodingKey {
-        case type = "@type"
-        case data = "sig_data"
-        case signer
-        case signature
-    }
+import Foundation
 
-	/// Type of the signature
-	public let type: String
-	/// The signed data.
-	public let data: String
-	/// The identity (key) of the signer.
-	public let signer: String
-	/// The actual signature.
-	public let signature: String
+public protocol LedgerService {
+    func credential(for id: String, with context: Context) async throws -> (String, String)
+    
+    func registry(for id: String, with context: Context) async throws -> (String, String)
 }

@@ -1,6 +1,6 @@
 {
 	"@id": "id",
-	"@type": "https://didcomm.org/connections/1.0/request",
+	"@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/request",
 	"connection": {
 		"DID": "did"
 	},

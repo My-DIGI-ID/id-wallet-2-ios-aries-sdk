@@ -15,12 +15,15 @@
 import XCTest
 
 class DocumentServiceTests: XCTestCase {
-	let fixture = DocumentService(
-		id: "id",
-		recipientKeys: ["recipientKeys"],
-		routingKeys: ["routingKeys"],
-		endpoint: "endpoint"
-	)
+    var fixture: DocumentService {
+        var service = DocumentService(
+            id: "id",
+            endpoint: "endpoint"
+        )
+        service.recipientKeys = ["recipientKeys"]
+        service.routingKeys = ["routingKeys"]
+        return service
+    }
 
 	func test_decode() throws {
 		// Arrange

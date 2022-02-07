@@ -11,9 +11,22 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Aries
+import Foundation
 
-struct TestMessage: Message {
-	let id: String
-    let type: String
+/// Service for requesting and retrieving credentials.
+public protocol CredentialService {
+    func proposal() async throws -> CredentialProposalMessage
+    
+    func process(
+        _ offer: CredentialOfferMessage,
+        for connectionId: String,
+        with context: Context
+    ) async throws -> String
+    
+    func request(
+        for credentialId: String,
+        with context: Context
+    ) async throws -> CredentialRequestMessage
+    
+    func process(_ credentials: CredentialIssueMessage, with context: Context) async throws -> String
 }

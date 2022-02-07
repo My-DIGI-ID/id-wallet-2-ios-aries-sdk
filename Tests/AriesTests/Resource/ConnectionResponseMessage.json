@@ -1,6 +1,6 @@
 {
 	"@id": "id",
-	"@type": "https://didcomm.org/connections/1.0/response",
+	"@type": "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response",
 	"connection~sig": {
 		"@type": "type",
 		"sig_data": "data",

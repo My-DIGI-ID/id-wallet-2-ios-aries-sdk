@@ -11,29 +11,21 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Foundation
-
-/// Message completing DID exchange in response to a request.
-public struct ConnectionResponseMessage: Message {
+/// Container for signature related data.
+public struct SignatureDecorator: Decorator {
     private enum CodingKeys: String, CodingKey {
-        case id = "@id"
         case type = "@type"
-        case signature = "connection~sig"
+        case data = "sig_data"
+        case signer
+        case signature
     }
-
-    /// The unique identifier
-    public let id: String
-    /// The type of message
-    public let type: String
-    /// Signature of the request
-    public let signature: SignatureDecorator
-
-	init(
-        id: String = UUID().uuidString,
-        signature: SignatureDecorator
-    ) {
-        self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response"
-        self.signature = signature
-	}
+    
+	/// Type of the signature
+	public let type: String
+	/// The signed data.
+	public let data: String
+	/// The identity (key) of the signer.
+	public let signer: String
+	/// The actual signature.
+	public let signature: String
 }

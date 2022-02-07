@@ -10,35 +10,25 @@
 // an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 //
+
 import Foundation
 
-/// Structure containing key information of a DID to verify control.
-public struct DocumentKey: Codable {
+/// Decorator for indicating that a response message is valid in the HTTP responses.
+public struct TransportDecorator: Decorator {
     private enum CodingKeys: String, CodingKey {
-        case id
-        case type
-        case controller
-        case key = "publicKeyBase58"
+        case mode = "return_route"
     }
+    
+    /// The mode when a direct response is expected
+    public let mode: ReturnMode
+    
+    public init(mode: ReturnMode = .all) {
+        self.mode = mode
+    }
+}
 
-	/// The unique URI of the key.
-	public let id: String
-	/// The type of key.
-	public let type: String
-	/// The controller of this specific key enabled to represent the subject.
-	public let controller: [String]?
-	/// The actual public key.
-	public let key: String
-
-	init(
-		id: String = UUID().uuidString,
-		type: String,
-		controller: [String]? = nil,
-		key: String
-	) {
-		self.id = id
-		self.type = type
-		self.controller = controller
-		self.key = key
-	}
+public enum ReturnMode: String, Codable {
+    case all
+    case none
+    case thread
 }

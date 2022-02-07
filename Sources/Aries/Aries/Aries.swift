@@ -21,7 +21,6 @@ public enum Aries {
     public static var wallet: WalletService = DefaultWalletService()
     public static var record: RecordService = DefaultRecordService()
 	public static var message: MessageService = DefaultMessageService()
-	public static var crypto: CryptoService = DefaultCryptoService()
 	public static var provisioning: ProvisioningService = DefaultProvisioningService(
 		recordService: record
 	)
@@ -29,4 +28,11 @@ public enum Aries {
 		recordService: record,
 		provisioningService: provisioning
 	)
+    public static var credential: CredentialService = DefaultCredentialService(
+        recordService: record,
+        provisioningService: provisioning,
+        ledgerService: ledger)
+    public static var pool: PoolService = DefaultPoolService()
+    public static var ledger: LedgerService = DefaultLedgerService()
+    public static var agent: AgentService = DefaultAgentService()
 }

@@ -11,9 +11,14 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Aries
+import Foundation
 
-struct TestMessage: Message {
-	let id: String
-    let type: String
+public protocol PoolService {
+    func create(with name: String, _ genenis: String) async throws
+    
+    func get(for name: String) async throws -> Pool
+    
+    func close(_ pool: Pool) async throws
+    
+    func delete(for name: String) async throws
 }

@@ -13,27 +13,33 @@
 
 import Foundation
 
-/// Message completing DID exchange in response to a request.
-public struct ConnectionResponseMessage: Message {
+public struct CredentialAttribute: Codable {
     private enum CodingKeys: String, CodingKey {
-        case id = "@id"
-        case type = "@type"
-        case signature = "connection~sig"
+        case name
+        case mimeType = "mime-type"
+        case value
     }
-
-    /// The unique identifier
-    public let id: String
-    /// The type of message
-    public let type: String
-    /// Signature of the request
-    public let signature: SignatureDecorator
-
-	init(
-        id: String = UUID().uuidString,
-        signature: SignatureDecorator
+    
+    public let name: String
+    public let mimeType: String?
+    public let value: String
+    
+    public init(
+        name: String,
+        value: String
     ) {
-        self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response"
-        self.signature = signature
-	}
+        self.name = name
+        self.mimeType = nil
+        self.value = value
+    }
+    
+    public init(
+        name: String,
+        mimeType: String,
+        valueBase64: String
+    ) {
+        self.name = name
+        self.mimeType = mimeType
+        self.value = valueBase64
+    }
 }

@@ -14,12 +14,24 @@
 import Foundation
 
 public protocol MessageService {
-    /// Send a (encrypted) message to another agent with a potential response.
+    /// Sends a message to another agent with a potential response.
     ///
     /// - Parameters:
-    /// 	- message: The message to be sent.
-    /// 	- endpoint: The destination of the message.
+    /// 	- request: All information needed to send the request.
+    /// 	- wallet: Used for encrypted communication
     ///
-    ///  - Returns: The (encrypted) response message, if there is any.
-    func send(_ message: Data, to endpoint: String) async throws -> Data?
+    ///  - Returns: The response message, if there is any.
+    func sendReceive<I: Message, O: Message>(
+        _ request: MessageRequest<I>,
+        with wallet: Wallet
+    ) async throws -> MessageResponse<O>
+    
+    /// Sends a message to another agent with a potential response.
+    ///
+    /// - Parameters:
+    ///     - request: All information needed to send the request.
+    ///     - wallet: Used for encrypted communication
+    ///
+    ///  - Returns: The response message, if there is any.
+    func send<I: Message>(_ request: MessageRequest<I>, with wallet: Wallet) async throws
 }

@@ -13,27 +13,22 @@
 
 import Foundation
 
-/// Message completing DID exchange in response to a request.
-public struct ConnectionResponseMessage: Message {
-    private enum CodingKeys: String, CodingKey {
-        case id = "@id"
-        case type = "@type"
-        case signature = "connection~sig"
-    }
-
-    /// The unique identifier
+public struct CredentialRecord: Record {
+    public static var type: String = "Aries.Credential"
     public let id: String
-    /// The type of message
-    public let type: String
-    /// Signature of the request
-    public let signature: SignatureDecorator
-
-	init(
-        id: String = UUID().uuidString,
-        signature: SignatureDecorator
-    ) {
+    public var credential: String?
+    public var definition: String?
+    public var schema: String?
+    public var connection: String?
+    public var revocation: String?
+    public var offer: String?
+    public var request: String?
+    public var metadata: String?
+    public var state: CredentialState = .offered
+    public var attributes: [CredentialAttribute] = []
+    public var tags: [String: String] = [:]
+    
+    init(id: String = UUID().uuidString) {
         self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response"
-        self.signature = signature
-	}
+    }
 }

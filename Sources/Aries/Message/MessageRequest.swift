@@ -11,9 +11,23 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Aries
+import Foundation
 
-struct TestMessage: Message {
-	let id: String
-    let type: String
+public struct MessageRequest<M: Message> {
+    public let message: M
+    public let recipientKeys: [String]
+    public let senderKey: String?
+    public let endpoint: String
+    
+    public init(
+        message: M,
+        recipientKeys: [String],
+        senderKey: String? = nil,
+        endpoint: String
+    ) {
+        self.message = message
+        self.recipientKeys = recipientKeys
+        self.senderKey = senderKey
+        self.endpoint = endpoint
+    }
 }

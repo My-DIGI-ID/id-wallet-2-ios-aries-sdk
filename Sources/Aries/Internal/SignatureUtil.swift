@@ -17,7 +17,12 @@ import IndyObjc
 
 enum SignatureUtil {
 	private static let defaultSignatureType = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/signature/1.0/ed25519Sha512_single"
-
+    private static let charPadding = "="
+    private static let char62 = "+"
+    private static let char63 = "/"
+    private static let charUrl62 = "-"
+    private static let charUrl63 = "_"
+    
 	static func sign(
 		_ data: Data,
 		with key: String,
@@ -34,17 +39,15 @@ enum SignatureUtil {
 
 		return SignatureDecorator(
 			type: Self.defaultSignatureType,
-			data: signatureData.base64EncodedString(),
+			data: encode(signatureData),
 			signer: key,
-			signature: signature.base64EncodedString()
+			signature: encode(signature)
 		)
 	}
 
 	static func verify(_ decorator: SignatureDecorator) async throws -> Data {
-		guard let signature = Data(base64Encoded: decorator.signature),
-            let signatureData = Data(base64Encoded: decorator.data) else {
-			throw AriesError.decoding("Signature")
-		}
+        let signature = try decode(decorator.signature)
+        let signatureData = try decode(decorator.data)
 
 		let valid = try await Crypto.verifiy(
 			signature,
@@ -57,4 +60,36 @@ enum SignatureUtil {
 
 		return signatureData.advanced(by: 8)
 	}
+    
+    private static func encode(_ data: Data) -> String {
+        let string = data.base64EncodedString()
+            .split(separator: charPadding.first!)[0]
+            .replacingOccurrences(of: char62, with: charUrl62)
+            .replacingOccurrences(of: char63, with: charUrl63)
+            
+        return string.padding(
+            toLength: string.count + (4 - string.count % 4) % 4,
+            withPad: charPadding,
+            startingAt: 0
+        )
+    }
+    
+    private static func decode(_ string: String) throws -> Data {
+        var string = string
+            .replacingOccurrences(of: charUrl62, with: char62)
+            .replacingOccurrences(of: charUrl63, with: char63)
+        
+        switch string.count % 4 {
+        case 0: break
+        case 2: string += charPadding
+        case 3: string += charPadding + charPadding
+        default: throw AriesError.decoding("Invalid format of base64")
+        }
+        
+        return Data(base64Encoded: string)!
+    }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 7c2e85ab46f38081f2c0bd411f3c37016ffcfb9a
 }

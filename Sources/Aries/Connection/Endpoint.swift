@@ -12,7 +12,7 @@
 //
 
 public struct Endpoint: Codable {
-	public let uri: String
-	public let did: String?
-	public let verkeys: [String]
+	public var uri: String
+	public var did: String?
+	public var verkeys: [String]
 }

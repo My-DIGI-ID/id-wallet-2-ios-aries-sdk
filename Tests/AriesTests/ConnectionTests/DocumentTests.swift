@@ -15,13 +15,14 @@
 import XCTest
 
 class DocumentTests: XCTestCase {
-	let fixture = Document(
-		id: "id",
-		controller: ["controller"],
-		alsoKnownAs: ["alsoKnownAs"],
-		keys: [],
-		services: []
-	)
+    var fixture: Document {
+        var document = Document(id: "id")
+        document.controller = ["controller"]
+        document.alsoKnownAs = ["alsoKnownAs"]
+        document.keys = []
+        document.services = []
+        return document
+    }
 
 	func test_decode() throws {
 		// Arrange

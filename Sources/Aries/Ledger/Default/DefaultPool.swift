@@ -11,9 +11,7 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Aries
+import Foundation
+import IndyObjc
 
-struct TestMessage: Message {
-	let id: String
-    let type: String
-}
+extension IndyHandle: Pool {}

@@ -14,13 +14,14 @@
 import Foundation
 
 /// Message requesting DID exchange in response to an invitation.
-public class ConnectionRequestMessage: Message {
+public struct ConnectionRequestMessage: Message {
     private enum CodingKeys: String, CodingKey {
         case id = "@id"
         case type = "@type"
         case label
         case imageUrl
         case connection
+        case transport = "~transport"
     }
 
     /// The unique identifier
@@ -33,6 +34,8 @@ public class ConnectionRequestMessage: Message {
 	public let imageUrl: String?
 	/// Container for the DID and corresponding document of the invitee.
 	public let connection: Connection
+    /// Decorator for the response mode
+    public var transport: TransportDecorator?
 
 	init(
 		id: String = UUID().uuidString,
@@ -41,7 +44,7 @@ public class ConnectionRequestMessage: Message {
 		connection: Connection
 	) {
         self.id = id
-        self.type = "https://didcomm.org/connections/1.0/request"
+        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/request"
         self.label = label
         self.imageUrl = imageUrl
         self.connection = connection

@@ -11,6 +11,8 @@
 // specific language governing permissions and limitations under the License.
 //
 
+// swiftlint:disable inclusive_language
+
 import Foundation
 
 public struct ProvisioningRecord: Record {
@@ -20,14 +22,7 @@ public struct ProvisioningRecord: Record {
 	public var id: String { Self.uniqueId }
 	public var tags: [String: String] = [:]
 
-	public let owner: Owner?
-	public let endpoint: Endpoint?
-
-	init(
-		owner: Owner? = nil,
-		endpoint: Endpoint? = nil
-	) {
-		self.owner = owner
-		self.endpoint = endpoint
-	}
+	public var owner: Owner?
+	public var endpoint: Endpoint?
+    public var masterSecretId: String?
 }

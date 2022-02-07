@@ -13,50 +13,59 @@
 
 /// Extension for generating DID documents for the participants of the connection.
 extension ConnectionRecord {
-	private static let defaultType = "Ed25519VerificationKey2018"
-
-	// TODO: Replace this with mediator record.
-	public func myDocument(for record: ProvisioningRecord) -> Document {
-		Document(
-			id: myDid ?? "",
-			keys: [
-				DocumentKey(
-                    id: myDid.map { $0 + "#keys-1" } ?? "",
-                    type: Self.defaultType,
-                    controller: myDid.map { [$0] },
-                    key: myVerkey ?? ""
-				)
-			],
-			services: [
-				DocumentService(
-                    id: myDid.map { $0 + ";indy" } ?? "",
-                    recipientKeys: myVerkey.map { [$0] } ?? [],
-                    routingKeys: record.endpoint?.verkeys ?? [],
-                    endpoint: record.endpoint?.uri ?? ""
-				)
-			]
-		)
-	}
-
-	public func theirDocument() -> Document {
-		Document(
-			id: theirDid ?? "",
-			keys: [
-				DocumentKey(
-                    id: theirDid.map { $0 + "#keys-1" } ?? "",
-                    type: Self.defaultType,
-                    controller: theirDid.map { [$0] },
-                    key: theirVerkey ?? ""
-				)
-			],
-			services: [
-				DocumentService(
-                    id: theirDid.map { $0 + ";indy" } ?? "",
-                    recipientKeys: theirVerkey.map { [$0] } ?? [],
-                    routingKeys: endpoint?.verkeys ?? [],
-                    endpoint: endpoint?.uri ?? ""
-				)
-			]
-		)
+    private static let defaultType = "Ed25519VerificationKey2018"
+    
+    public func myDocument(for record: ProvisioningRecord) -> Document {
+        let did = myDid!
+        let verkey = myVerkey!
+        
+        var document = Document(id: did)
+        document.keys = [
+            DocumentKey(
+                id: "\(did)#keys-1",
+                type: Self.defaultType,
+                controller: [did],
+                key: verkey
+            )
+        ]
+        
+        if let endpoint = record.endpoint, !endpoint.verkeys.isEmpty, !endpoint.uri.isEmpty {
+            var service = DocumentService(
+                id: "\(did);indy",
+                endpoint: endpoint.uri
+            )
+            service.recipientKeys = [verkey]
+            service.routingKeys = record.endpoint?.verkeys
+            document.services = [service]
+        }
+        
+        return document
+    }
+    
+    public func theirDocument() -> Document {
+        let did = theirDid!
+        let verkey = theirVerkey!
+        
+        var document = Document(id: did)
+        document.keys = [
+            DocumentKey(
+                id: "\(did)#keys-1",
+                type: Self.defaultType,
+                controller: [did],
+                key: verkey
+            )
+        ]
+        
+        if let endpoint = endpoint, !endpoint.uri.isEmpty {
+            var service = DocumentService(
+                id: "\(did);indy",
+                endpoint: endpoint.uri
+            )
+            service.recipientKeys = [verkey]
+            service.routingKeys = endpoint.verkeys
+            document.services = [service]
+        }
+        
+        return document
 	}
 }

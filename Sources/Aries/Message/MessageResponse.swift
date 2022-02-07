@@ -11,9 +11,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Aries
+import Foundation
 
-struct TestMessage: Message {
-	let id: String
-    let type: String
+public struct MessageResponse<T: Message> {
+    public let message: T
+    public let sender: String?
 }

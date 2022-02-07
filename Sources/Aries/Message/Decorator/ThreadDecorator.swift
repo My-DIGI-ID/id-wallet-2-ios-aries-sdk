@@ -13,27 +13,22 @@
 
 import Foundation
 
-/// Message completing DID exchange in response to a request.
-public struct ConnectionResponseMessage: Message {
+public struct ThreadDecorator: Decorator {
     private enum CodingKeys: String, CodingKey {
-        case id = "@id"
-        case type = "@type"
-        case signature = "connection~sig"
+        case threadId = "thid"
+        case parentId = "pthid"
+        case order = "sender_order"
+        case receivedOrders = "received_orders"
+        case goal = "goal_code"
     }
-
-    /// The unique identifier
-    public let id: String
-    /// The type of message
-    public let type: String
-    /// Signature of the request
-    public let signature: SignatureDecorator
-
-	init(
-        id: String = UUID().uuidString,
-        signature: SignatureDecorator
-    ) {
-        self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response"
-        self.signature = signature
-	}
+    
+    public let threadId: String
+    public var parentId: String?
+    public var order: Int?
+    public var receivedOrders: [String: Int]?
+    public var goal: String?
+    
+    init(threadId: String) {
+        self.threadId = threadId
+    }
 }

@@ -13,14 +13,18 @@
 
 /// Enumeration for all possible Aries errors with optional extra information.
 public enum AriesError: Error {
-	case invalidType(String)
     case encoding(String)
     case decoding(String)
-    case illegalResult(String)
     case transport(Error)
-    case illegalState(String)
     case notFound(String)
 
+    case illegalResult(String)
+    case illegalState(String)
+    
+    case invalidUrl(String)
+    case invalidType(String)
     case invalidKey(String)
 	case invalidSignature
+    
+    case notSetup(String)
 }

@@ -11,9 +11,12 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Aries
+import Foundation
 
-struct TestMessage: Message {
-	let id: String
-    let type: String
+public protocol AgentService {
+    func setup(with id: String, _ key: String, _ genesis: String) async throws
+    
+    func destroy() async throws
+    
+    func run<T>(_ closure: (Context) async throws -> T) async throws -> T
 }

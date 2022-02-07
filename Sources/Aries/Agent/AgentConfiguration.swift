@@ -11,9 +11,18 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import Aries
+import Foundation
 
-struct TestMessage: Message {
-	let id: String
-    let type: String
+public struct AgentConfiguration {
+    public let genesis: String
+    
+    init(
+        walletId: String,
+        walletKey: String,
+        genesisPath: String,
+        label: String,
+        imageUrl: String
+    ) {
+        self.genesis = genesisPath
+    }
 }

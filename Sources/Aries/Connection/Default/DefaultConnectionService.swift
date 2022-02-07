@@ -207,42 +207,50 @@ class DefaultConnectionService: ConnectionService {
         }
 
 		// Setup record
-		var connection = ConnectionRecord()
-		connection.myDid = did
-		connection.myVerkey = verkey
-		connection.state = .negotiating
-		connection.endpoint = Endpoint(
+        var record = ConnectionRecord(id: invitation.id)
+		record.myDid = did
+		record.myVerkey = verkey
+		record.state = .negotiating
+		record.endpoint = Endpoint(
             uri: invitation.endpoint,
             did: nil,
             verkeys: routingKeys ?? []
 		)
 		if invitation.label?.isEmpty == false || invitation.imageUrl?.isEmpty == false {
-			connection.alias = ConnectionAlias(
+			record.alias = ConnectionAlias(
 				name: invitation.label,
 				imageUrl: invitation.imageUrl
 			)
 		}
 		if let recipientKey = invitation.recipientKeys.first {
-			connection.tags["InvitationKey"] = recipientKey
+			record.tags["InvitationKey"] = recipientKey
 		}
 
 		// Create request
-		// TODO: Replace with mediator information
-		let provisioning = try await provisioningService.getRecord(from: wallet)
+		var provisioning = try await provisioningService.getRecord(from: wallet)
+        
+        if provisioning.endpoint == nil {
+            provisioning.endpoint = Endpoint(uri: "http://example.org", did: did, verkeys: [verkey])
+        } else {
+            provisioning.endpoint!.verkeys.append(verkey)
+        }
+        
+        let connection = Connection(
+            did: record.myDid ?? "",
+            document: record.myDocument(for: provisioning)
+        )
 		let request = ConnectionRequestMessage(
-			label: provisioning.owner?.name,
-			imageUrl: provisioning.owner?.imageUrl,
-			connection: Connection(
-				did: connection.myDid ?? "",
-				document: connection.myDocument(for: provisioning)
-			)
+            id: invitation.id,
+            label: provisioning.owner?.name,
+            imageUrl: provisioning.owner?.imageUrl,
+            connection: connection
 		)
 
 		// TODO: Also add image url as attachment
 
-		try await recordService.add(connection, to: wallet)
+		try await recordService.add(record, to: wallet)
 
-		return (request, connection)
+		return (request, record)
 	}
 
 	func processResponse(
@@ -257,9 +265,10 @@ class DefaultConnectionService: ConnectionService {
 		// Investigate connection
 		let data = try await SignatureUtil.verify(message.signature)
 		let json = String(bytes: data, encoding: .utf8) ?? ""
+        print(json)
 		let connection: Connection = try JSONDecoder.shared.model(json)
 		let theirDid = connection.did
-		let theirVerkey = connection.document?.keys?.first?.key
+        let theirVerkey = connection.document?.keys?.first?.key
 
 		// Store their DID
 		try await Did.storeTheirDid(
@@ -273,11 +282,11 @@ class DefaultConnectionService: ConnectionService {
 		record.theirVerkey = theirVerkey
 		record.state = .connected
 		record.tags[Tags.lastThreadId] = "message.threadId"
-		if let endpoint = connection.document?.services?.first {
+        if let endpoint = connection.document?.services?.first, let routingKeys = endpoint.routingKeys {
 			record.endpoint = Endpoint(
-				uri: endpoint.endpoint,
-				did: nil,
-				verkeys: endpoint.routingKeys
+                uri: endpoint.endpoint,
+                did: connection.did,
+                verkeys: routingKeys
 			)
 		}
 
