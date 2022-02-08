@@ -88,8 +88,4 @@ enum SignatureUtil {
         
         return Data(base64Encoded: string)!
     }
-<<<<<<< HEAD
-=======
-    
->>>>>>> 7c2e85ab46f38081f2c0bd411f3c37016ffcfb9a
 }

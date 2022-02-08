@@ -142,7 +142,7 @@ class DefaultCredentialService: CredentialService {
         let credentialJson = String(data: credentialEncoded, encoding: .utf8)!
         
         guard
-            let credential = try JSONSerialization.jsonObject(with: credentialEncoded) as? [String: Any],
+            let structure = try JSONSerialization.jsonObject(with: credentialEncoded) as? [String: Any],
             let credentialDefinitionId = structure["cred_def_id"] as? String,
             let revocationDefinitionId = structure["rev_reg_id"] as? String else {
                 throw AriesError.invalidType("Credential issue")
