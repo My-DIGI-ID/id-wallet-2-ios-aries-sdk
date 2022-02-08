@@ -36,7 +36,7 @@ class ConnectionServiceTests: XCTestCase {
         provisioningService: provisioningService,
         ledgerService: ledgerService
     )
-
+    
 	lazy var walletData0 = DefaultWalletData(
 		configuration: WalletConfiguration(id: UUID().uuidString),
 		credentials: WalletCredentials(key: "test")
@@ -99,17 +99,17 @@ class ConnectionServiceTests: XCTestCase {
 
 		// Act
 		let (invitation, recordInvitation) = try await connectionService
-            .createInvitation(with: context0.wallet, configuration)
+            .createInvitation(for: configuration, with: context0)
 
 		let (request, recordRequest) = try await connectionService
-            .createRequest(for: invitation, with: context1.wallet)
+            .createRequest(for: invitation, with: context1)
 
-        let id0 = try await connectionService.processRequest(request, with: recordInvitation, in: context0.wallet)
+        let id0 = try await connectionService.processRequest(request, with: recordInvitation, context0)
 
 		let (response, _) = try await connectionService
-            .createResponse(for: id0, in: context0.wallet)
+            .createResponse(for: id0, with: context0)
 
-        let id1 = try await connectionService.processResponse(response, with: recordRequest, in: context1.wallet)
+        let id1 = try await connectionService.processResponse(response, with: recordRequest, context1)
 
 		// Assert
         let record0 = try await recordService.get(ConnectionRecord.self, for: id0, from: context0.wallet)

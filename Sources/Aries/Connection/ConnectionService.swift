@@ -24,8 +24,8 @@ public protocol ConnectionService {
 	/// - Parameter configuration: Custom parameters for the invitation.
 	/// - Returns: The sendable invitation message and the created record for the connection.
 	func createInvitation(
-		with wallet: Wallet,
-		_ configuration: InvitationConfiguration
+		for configuration: InvitationConfiguration,
+        with context: Context
 	) async throws -> (ConnectionInvitationMessage, ConnectionRecord)
 
 	/// Revokes a created invitation and cancels the flow.
@@ -34,7 +34,7 @@ public protocol ConnectionService {
 	/// - Parameter wallet: The wallet where the connection is stored.
 	func revokeInvitation(
 		for connectionId: String,
-		in wallet: Wallet
+        with context: Context
 	) async throws
 
 	/// Updates the connection with the received request message.
@@ -46,7 +46,7 @@ public protocol ConnectionService {
 	func processRequest(
 		_ request: ConnectionRequestMessage,
 		with record: ConnectionRecord,
-		in wallet: Wallet
+        _ context: Context
 	) async throws -> String
 
 	/// Creates the response to complete an exchange flow.
@@ -58,7 +58,7 @@ public protocol ConnectionService {
 	/// - Returns: The sendable response message and the updated record for the connection.
 	func createResponse(
 		for id: String,
-		in wallet: Wallet
+        with context: Context
 	) async throws -> (ConnectionResponseMessage, ConnectionRecord)
 
 	// MARK: - Flow as Receiver
@@ -71,7 +71,7 @@ public protocol ConnectionService {
 	/// - Returns: The sendable request message and the created record for the connection.
 	func createRequest(
 		for invitation: ConnectionInvitationMessage,
-		with wallet: Wallet
+        with context: Context
 	) async throws -> (ConnectionRequestMessage, ConnectionRecord)
 
 	/// Completes the DID exchange by updating the record with response of the inviter.
@@ -85,6 +85,6 @@ public protocol ConnectionService {
 	func processResponse(
 		_ response: ConnectionResponseMessage,
 		with record: ConnectionRecord,
-		in wallet: Wallet
+        _ context: Context
 	) async throws -> String
 }

@@ -11,6 +11,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
+import Indy
+import IndyObjc
+
 class DefaultProvisioningService: ProvisioningService {
 
 	private let recordService: RecordService
@@ -18,12 +21,40 @@ class DefaultProvisioningService: ProvisioningService {
 	init(recordService: RecordService) {
 		self.recordService = recordService
 	}
-
-	func getRecord(from wallet: Wallet) async throws -> ProvisioningRecord {
-		try await recordService.get(
-			ProvisioningRecord.self,
-			for: ProvisioningRecord.uniqueId,
-			from: wallet
-		)
+    
+    func getRecord(with context: Context) async throws -> ProvisioningRecord {
+        do {
+            return try await recordService.get(
+                ProvisioningRecord.self,
+                for: ProvisioningRecord.uniqueId,
+                from: context.wallet
+            )
+        } catch {
+            let record = ProvisioningRecord()
+            try await recordService.add(record, to: context.wallet)
+            return record
+        }
 	}
+    
+    func update(_ owner: Owner, with context: Context) async throws {
+        var record = try await getRecord(with: context)
+        record.owner = owner
+        try await recordService.update(record, in: context.wallet)
+    }
+    
+    func update(_ endpoint: Endpoint, with context: Context) async throws {
+        var record = try await getRecord(with: context)
+        record.endpoint = endpoint
+        try await recordService.update(record, in: context.wallet)
+    }
+    
+    func update(_ masterSecretId: String, with context: Context) async throws {
+        guard let handle = context.wallet as? IndyHandle else {
+            throw AriesError.invalidType("Wallet")
+        }
+        
+        var record = try await getRecord(with: context)
+        record.masterSecretId = try await Indy.AnonCreds.Prover.masterSecret(with: masterSecretId, in: handle)
+        try await recordService.update(record, in: context.wallet)
+    }
 }

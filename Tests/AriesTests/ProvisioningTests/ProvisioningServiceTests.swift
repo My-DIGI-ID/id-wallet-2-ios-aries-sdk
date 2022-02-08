@@ -17,28 +17,44 @@ import IndyObjc
 import XCTest
 
 class ProvisioningServiceTests: XCTestCase {
-	var walletData = DefaultWalletData(
+    lazy var poolName = "Pool"
+    lazy var poolGenenis = Bundle.module.path(forResource: "idw_eesditest", ofType: "", inDirectory: "Resource")!
+	lazy var walletData = DefaultWalletData(
 		configuration: WalletConfiguration(id: UUID().uuidString),
 		credentials: WalletCredentials(key: "test")
 	)
-
-    var wallet: IndyHandle!
+    
 	lazy var walletService = DefaultWalletService()
 	lazy var recordService: RecordService = DefaultRecordService()
+    lazy var poolService: PoolService = DefaultPoolService()
 	lazy var service: ProvisioningService = DefaultProvisioningService(
 		recordService: recordService
 	)
+    
+    var context: Context!
 
 	override open func setUp() async throws {
         try await super.setUp()
-		try await walletService.create(for: walletData)
-		wallet = try await walletService.get(for: walletData) as? IndyHandle
+        try await walletService.create(for: walletData)
+        
+        try? await poolService.delete(for: poolName)
+        try await poolService.create(with: poolName, poolGenenis)
+        
+        context = Context(
+            wallet: try await walletService.get(for: walletData),
+            pool: try await poolService.get(for: poolName)
+        )
 	}
 
 	override open func tearDown() async throws {
-		try await walletService.close(wallet!)
-		try await walletService.delete(for: walletData)
-		wallet = nil
+        try await poolService.close(context.pool)
+        try await poolService.delete(for: poolName)
+        
+        try await walletService.close(context.wallet)
+        try await walletService.delete(for: walletData)
+        
+        context = nil
+        
         try await super.tearDown()
 	}
 
@@ -46,10 +62,10 @@ class ProvisioningServiceTests: XCTestCase {
 		// Arrange
 		let owner = Owner(name: "Tester", imageUrl: nil)
 		let expected = ProvisioningRecord(owner: owner)
-		try await recordService.add(expected, to: wallet)
+        try await recordService.add(expected, to: context.wallet)
 
 		// Act
-		let actual = try await service.getRecord(from: wallet)
+        let actual = try await service.getRecord(with: context)
 
 		// Assert
 		XCTAssertEqual(actual.id, expected.id)
@@ -64,11 +80,11 @@ class ProvisioningServiceTests: XCTestCase {
 		// Arrange
 		let owner = Owner(name: "Tester", imageUrl: nil)
 		let record = ProvisioningRecord(owner: owner)
-		try await recordService.add(record, to: wallet)
+        try await recordService.add(record, to: context.wallet)
 
 		// Act
-		let first = try await service.getRecord(from: wallet)
-		let second = try await service.getRecord(from: wallet)
+		let first = try await service.getRecord(with: context)
+		let second = try await service.getRecord(with: context)
 
 		// Assert
 		XCTAssertEqual(first.id, second.id)
@@ -78,4 +94,36 @@ class ProvisioningServiceTests: XCTestCase {
 		XCTAssertEqual(first.endpoint?.uri, second.endpoint?.uri)
 		XCTAssertEqual(first.endpoint?.verkeys, second.endpoint?.verkeys)
 	}
+    
+    func test_update_master_secret_id() async throws {
+        // Arrange
+        let secret = "ABC"
+        let before = try await service.getRecord(with: context)
+        
+        // Act
+        try await service.update(secret, with: context)
+        let after = try await service.getRecord(with: context)
+        
+        // Assert
+        XCTAssertEqual(before.id, after.id)
+        XCTAssertNotEqual(before.masterSecretId, after.masterSecretId)
+        XCTAssertEqual(after.masterSecretId, secret)
+    }
+    
+    func test_update_master_secret_id_with_existing() async throws {
+        // Arrange
+        let secret0 = "ABC"
+        let secret1 = "DEF"
+        try await service.update(secret0, with: context)
+        let before = try await service.getRecord(with: context)
+        
+        // Act
+        try await service.update(secret1, with: context)
+        let after = try await service.getRecord(with: context)
+        
+        // Assert
+        XCTAssertEqual(before.id, after.id)
+        XCTAssertNotEqual(before.masterSecretId, after.masterSecretId)
+        XCTAssertEqual(after.masterSecretId, secret1)
+    }
 }

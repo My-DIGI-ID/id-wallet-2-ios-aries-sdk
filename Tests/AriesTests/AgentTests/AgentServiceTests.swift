@@ -11,12 +11,26 @@
 // specific language governing permissions and limitations under the License.
 //
 
-public protocol ProvisioningService {
-    func getRecord(with context: Context) async throws -> ProvisioningRecord
+// swiftlint:disable duplicate_imports
+
+@testable import Aries
+import protocol Aries.Wallet
+import Indy
+import IndyObjc
+import XCTest
+
+class AgentServiceTests: XCTestCase {
+
+    let agentService: AgentService = DefaultAgentService()
     
-    func update(_ endpoint: Endpoint, with context: Context) async throws
-    
-    func update(_ owner: Owner, with context: Context) async throws
-    
-    func update(_ masterSecretId: String, with context: Context) async throws
+    func test_setup_and_destroy() async throws {
+        // Arrange
+        let id = "ID"
+        let key = "KEY"
+        let genesis = Bundle.module.path(forResource: "idw_eesditest", ofType: nil, inDirectory: "Resource")!
+        
+        // Act
+        try await agentService.setup(with: id, key, genesis)
+        try await agentService.destroy()
+    }
 }

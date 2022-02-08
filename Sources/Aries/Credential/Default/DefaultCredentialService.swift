@@ -82,7 +82,7 @@ class DefaultCredentialService: CredentialService {
         }
         
         var record = try await recordService.get(CredentialRecord.self, for: credentialId, from: context.wallet)
-        let provisioning = try await provisioningService.getRecord(from: context.wallet)
+        let provisioning = try await provisioningService.getRecord(with: context)
         let connection: ConnectionRecord?
         let did: String
         

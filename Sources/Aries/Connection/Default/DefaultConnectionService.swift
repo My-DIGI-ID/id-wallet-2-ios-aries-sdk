@@ -32,10 +32,10 @@ class DefaultConnectionService: ConnectionService {
 	// MARK: - Flow As Initiator
 
 	func createInvitation(
-		with wallet: Wallet,
-		_ configuration: InvitationConfiguration
+        for configuration: InvitationConfiguration,
+		with context: Context
 	) async throws -> (ConnectionInvitationMessage, ConnectionRecord) {
-		guard let handle = wallet as? IndyHandle else {
+        guard let handle = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 
@@ -60,13 +60,13 @@ class DefaultConnectionService: ConnectionService {
 		}
 
 		// TODO: Replace with mediator information
-		let provisioning = try await provisioningService.getRecord(from: wallet)
+        let provisioning = try await provisioningService.getRecord(with: context)
 
 		guard provisioning.endpoint?.uri.isEmpty == false else {
 			throw AriesError.notFound("Provisioning Endpoint")
 		}
 
-		try await recordService.add(connection, to: wallet)
+        try await recordService.add(connection, to: context.wallet)
 
 		// TODO: Use DID utility
 		let routingKeys: [String]
@@ -92,22 +92,22 @@ class DefaultConnectionService: ConnectionService {
 		return (message, connection)
 	}
 
-	func revokeInvitation(for connectionId: String, in wallet: Wallet) async throws {
-        let record = try await recordService.get(ConnectionRecord.self, for: connectionId, from: wallet)
+    func revokeInvitation(for connectionId: String, with context: Context) async throws {
+        let record = try await recordService.get(ConnectionRecord.self, for: connectionId, from: context.wallet)
 
 		guard record.state == .invited else {
             throw AriesError.illegalState("Expected \(ConnectionState.invited), found: \(record.state)")
 		}
 
-        try await recordService.delete(ConnectionRecord.self, with: connectionId, in: wallet)
+        try await recordService.delete(ConnectionRecord.self, with: connectionId, in: context.wallet)
 	}
 
 	func processRequest(
 		_ message: ConnectionRequestMessage,
 		with record: ConnectionRecord,
-		in wallet: Wallet
+        _ context: Context
 	) async throws -> String {
-		guard let handle = wallet as? IndyHandle else {
+        guard let handle = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 
@@ -131,7 +131,7 @@ class DefaultConnectionService: ConnectionService {
 		if !record.multiParty {
 			record.state = .negotiating
 
-			try await recordService.update(record, in: wallet)
+            try await recordService.update(record, in: context.wallet)
 
 			return record.id
 		} else {
@@ -146,7 +146,7 @@ class DefaultConnectionService: ConnectionService {
 			new.state = .negotiating
 			new.tags = record.tags
 
-			try await recordService.add(new, to: wallet)
+            try await recordService.add(new, to: context.wallet)
 
 			return new.id
 		}
@@ -154,20 +154,20 @@ class DefaultConnectionService: ConnectionService {
 
 	func createResponse(
 		for id: String,
-		in wallet: Wallet
+        with context: Context
 	) async throws -> (ConnectionResponseMessage, ConnectionRecord) {
 
 		// Update record
-        var record = try await recordService.get(ConnectionRecord.self, for: id, from: wallet)
+        var record = try await recordService.get(ConnectionRecord.self, for: id, from: context.wallet)
 		guard record.state == .negotiating else {
             throw AriesError.illegalState("Expected \(ConnectionState.negotiating), found \(record.state)")
 		}
 		record.state = .connected
-		try await recordService.update(record, in: wallet)
+        try await recordService.update(record, in: context.wallet)
 
 		// Create response
 		// TODO: Replace with mediator information
-		let provisioning = try await provisioningService.getRecord(from: wallet)
+        let provisioning = try await provisioningService.getRecord(with: context)
 		let connection = Connection(
 			did: record.myDid ?? "",
 			document: record.myDocument(for: provisioning)
@@ -175,7 +175,7 @@ class DefaultConnectionService: ConnectionService {
 
 		let key = record.tags[Tags.connectionKey] ?? ""
 		let data = try JSONEncoder.shared.encode(connection)
-		let signature = try await SignatureUtil.sign(data, with: key, wallet)
+        let signature = try await SignatureUtil.sign(data, with: key, context.wallet)
 
 		// TODO: Add Thread decorator when implemented
 		// let threadId = record.tags[Tags.lastThreadId]
@@ -191,9 +191,9 @@ class DefaultConnectionService: ConnectionService {
 
 	func createRequest(
 		for invitation: ConnectionInvitationMessage,
-		with wallet: Wallet
+        with context: Context
 	) async throws -> (ConnectionRequestMessage, ConnectionRecord) {
-		guard let handle = wallet as? IndyHandle else {
+        guard let handle = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 
@@ -227,7 +227,7 @@ class DefaultConnectionService: ConnectionService {
 		}
 
 		// Create request
-		var provisioning = try await provisioningService.getRecord(from: wallet)
+        var provisioning = try await provisioningService.getRecord(with: context)
         
         if provisioning.endpoint == nil {
             provisioning.endpoint = Endpoint(uri: "http://example.org", did: did, verkeys: [verkey])
@@ -248,7 +248,7 @@ class DefaultConnectionService: ConnectionService {
 
 		// TODO: Also add image url as attachment
 
-		try await recordService.add(record, to: wallet)
+        try await recordService.add(record, to: context.wallet)
 
 		return (request, record)
 	}
@@ -256,9 +256,9 @@ class DefaultConnectionService: ConnectionService {
 	func processResponse(
 		_ message: ConnectionResponseMessage,
 		with record: ConnectionRecord,
-		in wallet: Wallet
+        _ context: Context
 	) async throws -> String {
-		guard let handle = wallet as? IndyHandle else {
+        guard let handle = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 
@@ -290,7 +290,7 @@ class DefaultConnectionService: ConnectionService {
 			)
 		}
 
-		try await recordService.update(record, in: wallet)
+        try await recordService.update(record, in: context.wallet)
 
 		return record.id
 	}
