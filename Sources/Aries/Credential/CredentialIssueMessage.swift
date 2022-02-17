@@ -35,6 +35,6 @@ public struct CredentialIssueMessage: Message {
     
     public init(id: String = UUID().uuidString) {
         self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/issue-credential"
+        self.type = MessageType.credentialIssue.rawValue
     }
 }

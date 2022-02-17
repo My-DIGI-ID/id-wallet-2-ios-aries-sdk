@@ -16,11 +16,10 @@ import Foundation
 public protocol MessageService {
     /// Sends a message to another agent with a potential response.
     ///
-    /// - Parameters:
-    /// 	- request: All information needed to send the request.
-    /// 	- wallet: Used for encrypted communication
+    /// - Parameter request: All information needed to send the request.
+    /// - Parameter wallet: Used for encrypted communication
     ///
-    ///  - Returns: The response message, if there is any.
+    /// - Returns: The response message, if there is any.
     func sendReceive<I: Message, O: Message>(
         _ request: MessageRequest<I>,
         with wallet: Wallet
@@ -28,10 +27,17 @@ public protocol MessageService {
     
     /// Sends a message to another agent with a potential response.
     ///
-    /// - Parameters:
-    ///     - request: All information needed to send the request.
-    ///     - wallet: Used for encrypted communication
+    /// - Parameter request: All information needed to send the request.
+    /// - Parameter wallet: Used for encrypted communication
     ///
-    ///  - Returns: The response message, if there is any.
+    /// - Returns: The response message, if there is any.
     func send<I: Message>(_ request: MessageRequest<I>, with wallet: Wallet) async throws
+    
+    /// Receive a packed message, which arrived over another channel than direct response.
+    ///
+    /// - Parameter data: The encoded message.
+    /// - Parameter wallet: The wallet used to unpack the and decode the message.
+    ///
+    /// - Returns: The decoded message with the anticipated type.
+    func receive<O: Message>(_ data: Data, with wallet: Wallet) async throws -> MessageResponse<O>
 }

@@ -38,6 +38,6 @@ public struct CredentialRequestMessage: Message {
     
     public init(id: String = UUID().uuidString) {
         self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/request-credential"
+        self.type = MessageType.credentialRequest.rawValue
     }
 }

@@ -30,7 +30,10 @@ class AgentServiceTests: XCTestCase {
         let genesis = Bundle.module.path(forResource: "idw_eesditest", ofType: nil, inDirectory: "Resource")!
         
         // Act
-        try await agentService.setup(with: id, key, genesis)
-        try await agentService.destroy()
+        try await agentService.initialize(with: id, key, genesis)
+        try await agentService.open(with: id, key)
+        try await agentService.run { _ in }
+        try await agentService.close()
+        try await agentService.destroy(with: id, key)
     }
 }

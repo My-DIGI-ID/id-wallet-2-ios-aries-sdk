@@ -17,17 +17,20 @@ public struct MessageRequest<M: Message> {
     public let message: M
     public let recipientKeys: [String]
     public let senderKey: String?
+    public let headers: [String: String]
     public let endpoint: String
     
     public init(
         message: M,
         recipientKeys: [String],
         senderKey: String? = nil,
+        headers: [String: String] = [:],
         endpoint: String
     ) {
         self.message = message
         self.recipientKeys = recipientKeys
         self.senderKey = senderKey
+        self.headers = headers
         self.endpoint = endpoint
     }
 }

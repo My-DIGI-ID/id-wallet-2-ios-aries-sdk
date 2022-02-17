@@ -22,7 +22,7 @@ public struct ThreadDecorator: Decorator {
         case goal = "goal_code"
     }
     
-    public let threadId: String
+    public let threadId: String?
     public var parentId: String?
     public var order: Int?
     public var receivedOrders: [String: Int]?

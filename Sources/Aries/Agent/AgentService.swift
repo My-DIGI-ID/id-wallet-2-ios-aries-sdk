@@ -14,9 +14,14 @@
 import Foundation
 
 public protocol AgentService {
-    func setup(with id: String, _ key: String, _ genesis: String) async throws
     
-    func destroy() async throws
+    func initialize(with id: String, _ key: String, _ genesis: String) async throws
+    
+    func destroy(with id: String, _ key: String) async throws
+    
+    func open(with id: String, _ key: String) async throws
+    
+    func close() async throws
     
     func run<T>(_ closure: (Context) async throws -> T) async throws -> T
 }

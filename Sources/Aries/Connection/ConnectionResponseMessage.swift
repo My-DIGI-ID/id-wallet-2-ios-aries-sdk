@@ -33,7 +33,7 @@ public struct ConnectionResponseMessage: Message {
         signature: SignatureDecorator
     ) {
         self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response"
+        self.type = MessageType.connectionResponse.rawValue
         self.signature = signature
 	}
 }

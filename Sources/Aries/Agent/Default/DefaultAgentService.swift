@@ -14,58 +14,56 @@
 import Foundation
 import Indy
 
-class DefaultAgentService: AgentService {
-    
-    private var data: WalletData?
-    private var poolName: String?
+public class DefaultAgentService: AgentService {
+
     private var context: Context?
     
-    func setup(with id: String, _ key: String, _ genesis: String) async throws {
-        let data = DefaultWalletData(
-            configuration: WalletConfiguration(id: id),
-            credentials: WalletCredentials(key: key)
+    public func initialize(with id: String, _ key: String, _ genesis: String) async throws {
+        try await Aries.wallet.create(for: data(for: id, key))
+        try await Aries.pool.create(with: id, genesis)
+    }
+    
+    public func destroy(with id: String, _ key: String) async throws {
+        guard context == nil else {
+            throw AriesError.unclosedWallet("Agent must be closed before destruction.")
+        }
+        
+        try await Aries.wallet.delete(for: data(for: id, key))
+        try await Aries.pool.delete(for: id)
+    }
+    
+    public func open(with id: String, _ key: String) async throws {
+        context = Context(
+            wallet: try await Aries.wallet.get(for: data(for: id, key)),
+            pool: try await Aries.pool.get(for: id)
         )
-        
-        // Try create wallet and pool config, if it fails, they already exist.
-        try? await Aries.wallet.create(for: data)
-        try? await Aries.pool.create(with: id, genesis)
-        
-        // Get handles
-        let wallet = try await Aries.wallet.get(for: data)
-        let pool = try await Aries.pool.get(for: id)
-        
-        self.data = data
-        self.poolName = id
-        self.context = Context(wallet: wallet, pool: pool)
     }
     
-    func destroy() async throws {
-        guard let data = data, let poolName = poolName, let context = context else {
-            throw AriesError.notSetup("Agent can not be destroyed without setup.")
-        }
-        
-        try await Aries.wallet.close(context.wallet)
-        try await Aries.wallet.delete(for: data)
-        try await Aries.pool.close(context.pool)
-        try await Aries.pool.delete(for: poolName)
-    }
-    
-    func run<T>(_ closure: (Context) async throws -> T) async throws -> T {
+    public func close() async throws {
         guard let context = context else {
-            throw AriesError.notSetup("Agent must be setup before using it")
+            return            
         }
-
+        try await Aries.wallet.close(context.wallet)
+        try await Aries.pool.close(context.pool)
+        self.context = nil
+    }
+        
+    public func run<T>(_ closure: (Context) async throws -> T) async throws -> T {
+        guard let context = context else {
+            throw AriesError.unclosedWallet("Agent must be setup before using it")
+        }
+        
         return try await closure(context)
     }
     
+    private func data(for id: String, _ key: String) -> WalletData {
+        DefaultWalletData(
+            configuration: WalletConfiguration(id: id),
+            credentials: WalletCredentials(key: key)
+        )
+    }
+    
     deinit {
-        guard let context = context else {
-            return
-        }
-        
-        Task {
-            try? await Aries.wallet.close(context.wallet)
-            try? await Aries.pool.close(context.pool)
-        }
+        Task { try? await close() }
     }
 }

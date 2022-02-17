@@ -15,4 +15,14 @@ public struct Endpoint: Codable {
 	public var uri: String
 	public var did: String?
 	public var verkeys: [String]
+    
+    public init(
+        uri: String,
+        did: String? = nil,
+        verkeys: [String] = []
+    ) {
+        self.uri = uri
+        self.did = did
+        self.verkeys = verkeys
+    }
 }

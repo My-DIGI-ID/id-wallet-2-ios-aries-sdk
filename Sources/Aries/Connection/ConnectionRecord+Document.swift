@@ -29,13 +29,13 @@ extension ConnectionRecord {
             )
         ]
         
-        if let endpoint = record.endpoint, !endpoint.verkeys.isEmpty, !endpoint.uri.isEmpty {
+        if let endpoint = record.endpoint, !endpoint.uri.isEmpty {
             var service = DocumentService(
                 id: "\(did);indy",
                 endpoint: endpoint.uri
             )
             service.recipientKeys = [verkey]
-            service.routingKeys = record.endpoint?.verkeys
+            service.routingKeys = endpoint.verkeys
             document.services = [service]
         }
         

@@ -63,11 +63,9 @@ class DefaultCredentialService: CredentialService {
         record.attributes = message.preview?.attributes ?? []
         record.state = .offered
         record.connection = connectionId
-        
-        if let thread = message.thread?.threadId {
-            record.tags[Tags.lastThreadId] = thread
-        }
-        
+        record.tags[Tags.connectionKey] = connectionId
+        record.tags[Tags.lastThreadId] = message.thread?.threadId ?? message.id
+                
         try await recordService.add(record, to: context.wallet)
         
         return record.id
@@ -83,17 +81,18 @@ class DefaultCredentialService: CredentialService {
         
         var record = try await recordService.get(CredentialRecord.self, for: credentialId, from: context.wallet)
         let provisioning = try await provisioningService.getRecord(with: context)
-        let connection: ConnectionRecord?
         let did: String
         
-        if let connectionId = record.connection {
-            connection = try await recordService.get(ConnectionRecord.self, for: connectionId, from: context.wallet)
-            did = connection!.myDid!
-        } else {
-            connection = nil
-            did = try await Did.createAndStore(in: handle).0
+        guard let connectionId = record.connection else {
+            throw AriesError.notFound("Connection ID")
         }
         
+        let connection = try await recordService.get(ConnectionRecord.self, for: connectionId, from: context.wallet)
+        
+        guard let did = connection.myDid else {
+            throw AriesError.notFound("My DID")
+        }
+
         let (_, definition) = try await ledgerService.credential(for: record.definition!, with: context)
         
         let (request, metadata) = try await AnonCreds.Prover.request(
@@ -108,22 +107,15 @@ class DefaultCredentialService: CredentialService {
         try await recordService.update(record, in: context.wallet)
         
         // Message
-        
         let attachment = AttachmentDecorator(
             id: "libindy-cred-request-0",
             mimeType: "application/json",
             base64: request.data(using: .utf8)!.base64EncodedString()
         )
-        
-        var thread = ThreadDecorator(threadId: record.tags[Tags.lastThreadId]!)
-        thread.order = 1
-        if let c = connection {
-            thread.receivedOrders = [c.theirVerkey!: 0]
-        }
-        
+                
         var message = CredentialRequestMessage()
         message.requests.append(attachment)
-        message.thread = thread
+        message.thread = ThreadDecorator(threadId: record.tags[Tags.lastThreadId]!)
         message.transport = TransportDecorator(mode: .all)
         
         return message
@@ -154,7 +146,7 @@ class DefaultCredentialService: CredentialService {
         var record = try await recordService.search(
             CredentialRecord.self,
             in: context.wallet,
-            with: .equal(name: Tags.lastThreadId, value: message.thread!.threadId),
+            with: .equal(name: Tags.lastThreadId, value: message.thread!.threadId!),
             count: 1,
             skip: 0
         ).first!

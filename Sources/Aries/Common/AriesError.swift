@@ -26,5 +26,5 @@ public enum AriesError: Error {
     case invalidKey(String)
 	case invalidSignature
     
-    case notSetup(String)
+    case unclosedWallet(String)
 }

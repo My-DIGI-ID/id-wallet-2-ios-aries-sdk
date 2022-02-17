@@ -53,6 +53,6 @@ public struct CredentialProposalMessage: Message {
     
     public init(id: String = UUID().uuidString) {
         self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/propose-credential"
+        self.type = MessageType.credentialProposal.rawValue
     }
 }

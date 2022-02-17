@@ -18,8 +18,8 @@ import IndyObjc
 /// This a ready-to-use implementation of the ``WalletService`` based on the wallet in Hyperledger Indy.
 ///
 /// These functions directly pass through to the iOS wrapper and the underlying Indy implementation.
-class DefaultWalletService: WalletService {
-    func get(for data: WalletData) async throws -> Wallet {
+public class DefaultWalletService: WalletService {
+    public func get(for data: WalletData) async throws -> Wallet {
 		guard let data = data as? DefaultWalletData else {
             throw AriesError.invalidType("WalletData")
         }
@@ -28,7 +28,7 @@ class DefaultWalletService: WalletService {
 			.open(with: data.configuration, data.credentials)
     }
 
-    func close(_ wallet: Wallet) async throws {
+    public func close(_ wallet: Wallet) async throws {
 		guard let wallet = wallet as? IndyHandle else {
             throw AriesError.invalidType("Wallet")
         }
@@ -36,7 +36,7 @@ class DefaultWalletService: WalletService {
 		try await Indy.Wallet.close(for: wallet)
     }
 
-    func create(for data: WalletData) async throws {
+    public func create(for data: WalletData) async throws {
 		guard let data = data as? DefaultWalletData else {
             throw AriesError.invalidType("WalletData")
         }
@@ -45,7 +45,7 @@ class DefaultWalletService: WalletService {
 			.create(with: data.configuration, data.credentials)
     }
 
-    func delete(for data: WalletData) async throws {
+    public func delete(for data: WalletData) async throws {
 		guard let data = data as? DefaultWalletData else {
             throw AriesError.invalidType("WalletData")
         }
@@ -54,7 +54,7 @@ class DefaultWalletService: WalletService {
 			.delete(with: data.configuration, data.credentials)
     }
 
-    func generateKey(with seed: String?) async throws -> String {
+    public static func generateKey(with seed: String? = nil) async throws -> String {
 		try await Indy.Wallet.generateKey(seed: seed?.clamp(to: 32))
     }
 }

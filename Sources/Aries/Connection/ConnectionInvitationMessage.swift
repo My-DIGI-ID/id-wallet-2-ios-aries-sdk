@@ -49,7 +49,7 @@ public struct ConnectionInvitationMessage: Message {
 		recipientKeys: [String]
 	) {
         self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation"
+        self.type = MessageType.connectionInvitation.rawValue
 		self.label = label
 		self.imageUrl = imageUrl
 		self.endpoint = endpoint

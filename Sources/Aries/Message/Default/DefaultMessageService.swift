@@ -15,35 +15,39 @@ import Foundation
 import Indy
 import IndyObjc
 
-class DefaultMessageService: MessageService {
+public class DefaultMessageService: MessageService {
     private static let contentType = "application/ssi-agent-wire"
 
-	var session: URLSession = .shared
+	public var session: URLSession = .shared
 
-    func sendReceive<I: Message, O: Message>(
+    public func sendReceive<I: Message, O: Message>(
         _ request: MessageRequest<I>,
         with wallet: Wallet
     ) async throws -> MessageResponse<O> {
-        guard let handle = wallet as? IndyHandle else {
-            throw AriesError.invalidType("Wallet")
-        }
-        
         let content: Data? = try await sendReceive(request, with: wallet)
         
         guard let data = content else {
             throw AriesError.notFound("Response")
         }
         
+        return try await receive(data, with: wallet)
+    }
+    
+    public func send<I: Message>(_ request: MessageRequest<I>, with wallet: Wallet) async throws {
+        try await sendReceive(request, with: wallet)
+    }
+    
+    public func receive<O: Message>(_ data: Data, with wallet: Wallet) async throws -> MessageResponse<O> {
+        guard let handle = wallet as? IndyHandle else {
+            throw AriesError.invalidType("Wallet")
+        }
+        
         let unpacked: UnpackedMessage<String> = try await Crypto.unpack(data, with: handle)
-
+        
         return MessageResponse(
             message: try JSONDecoder.shared.model(unpacked.message),
             sender: unpacked.keySender
         )
-    }
-    
-    func send<I: Message>(_ request: MessageRequest<I>, with wallet: Wallet) async throws {
-        try await sendReceive(request, with: wallet)
     }
     
     @discardableResult
@@ -55,25 +59,33 @@ class DefaultMessageService: MessageService {
             throw AriesError.invalidType("Wallet")
         }
         
-        let packed: Data = try await Crypto.pack(request.message, for: request.recipientKeys, from: request.senderKey, with: handle)
+        let packed: Data = try await Crypto.pack(
+            request.message, for: request.recipientKeys, from: request.senderKey, with: handle)
         
         guard let url = URL(string: request.endpoint) else {
             throw AriesError.invalidUrl(request.endpoint)
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue(Self.contentType, forHTTPHeaderField: "Content-Type")
-        request.httpBody = packed
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.httpBody = packed
+        
+        urlRequest.addValue(Self.contentType, forHTTPHeaderField: "Content-Type")
+        request.headers.forEach { (k, v) in
+            urlRequest.addValue(v, forHTTPHeaderField: k)
+        }        
         
         return try await withCheckedThrowingContinuation { cont in
-            session.dataTask(with: request) { data, response, error in
+            session.dataTask(with: urlRequest) { data, response, error in
                 if let error = error {
                     cont.resume(throwing: AriesError.transport(error))
                 } else if let response = response as? HTTPURLResponse {
-                    if (200 ..< 300).contains(response.statusCode) {
+                    switch response.statusCode {
+                    case 200 ..< 300:
                         cont.resume(returning: data)
-                    } else {
+                    case 500..<600:
+                        cont.resume(throwing: AriesError.notFound("Server Error"))
+                    default:
                         cont.resume(returning: nil)
                     }
                 } else {

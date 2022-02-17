@@ -11,16 +11,16 @@
 // specific language governing permissions and limitations under the License.
 //
 
-enum Tags {
-	static let nonce = "nonce"
-	static let did = "did"
-	static let alias = "alias"
-	static let connectionKey = "connectionKey"
-	static let issuerDid = "issuerDid"
-	static let autoAccept = "autoAcceptConnection"
-	static let role = "role"
-	static let issuer = "issuer"
-	static let holder = "holder"
-	static let requestor = "requestor"
-	static let lastThreadId = "threadId"
+public enum Tags {
+    public static let nonce = "nonce"
+    public static let did = "did"
+    public static let alias = "alias"
+    public static let connectionKey = "connectionKey"
+    public static let issuerDid = "issuerDid"
+    public static let autoAccept = "autoAcceptConnection"
+    public static let role = "role"
+    public static let issuer = "issuer"
+    public static let holder = "holder"
+    public static let requestor = "requestor"
+    public static let lastThreadId = "threadId"
 }

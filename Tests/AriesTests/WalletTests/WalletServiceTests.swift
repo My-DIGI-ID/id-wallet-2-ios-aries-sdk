@@ -21,7 +21,7 @@ class WalletServiceTests: XCTestCase {
 
     func test_generate_key() async throws {
         // Act
-        let result = try await walletService.generateKey(with: nil)
+        let result = try await DefaultWalletService.generateKey()
 
         // Assert
         XCTAssertFalse(result.isEmpty, "Generated wallet master key should not be empty")
@@ -29,27 +29,31 @@ class WalletServiceTests: XCTestCase {
 
     func test_generate_key_with_seed() async throws {
         // Arrange
-        let seed = "Hyperledger Aries"
+        let seed = "+/=Hyperledger Aries"
 
         // Act
-        let result = try await walletService.generateKey(with: seed)
+        let result = try await DefaultWalletService.generateKey(with: seed)
 
         // Assert
         XCTAssertFalse(result.isEmpty, "Generated wallet master key should not be empty")
     }
 
     func test_all_operations() async throws {
-        try await test(with: nil)
+        try await test(with: nil, "1")
     }
 
     func test_all_operations_with_raw() async throws {
-        try await test(with: .raw)
+        try await test(with: .raw, try await DefaultWalletService.generateKey())
+    }
+    
+    func test_all_operations_with_raw_no_base58() async throws {
+        try await test(with: .raw, "9AdhysU")
     }
 
-    private func test(with method: KeyDerivationMethod?) async throws {
+    private func test(with method: KeyDerivationMethod?, _ key: String) async throws {
 		let config = WalletConfiguration(id: UUID().uuidString)
         let creds = WalletCredentials(
-            key: method == .raw ? try await walletService.generateKey(with: nil) : "1",
+            key: key,
             derivationMethodKey: method
         )
 

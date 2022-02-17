@@ -11,15 +11,17 @@
 // specific language governing permissions and limitations under the License.
 //
 
-public struct Owner: Codable {
-	public let name: String?
-	public let imageUrl: String?
-    
-    public init(
-        name: String? = nil,
-        imageUrl: String? = nil
-    ) {
-        self.name = name
-        self.imageUrl = imageUrl
+import Foundation
+
+/// This message is used the decode only the head of a message, which is given regardless of the type.
+///
+/// This allows to determinate the right message type to decode it in the right model.
+public struct HeaderMessage: Message {
+    private enum CodingKeys: String, CodingKey {
+        case id = "@id"
+        case type = "@type"
     }
+    
+    public let id: String
+    public let type: String
 }

@@ -197,14 +197,8 @@ class DefaultConnectionService: ConnectionService {
 			throw AriesError.invalidType("Wallet")
 		}
 
+        // Create a new DID and verkey for this connection
 		let (did, verkey) = try await Did.createAndStore(in: handle)
-
-        let routingKeys: [String]?
-        if let keys = invitation.routingKeys, !keys.isEmpty {
-            routingKeys = keys
-        } else {
-            routingKeys = nil
-        }
 
 		// Setup record
         var record = ConnectionRecord(id: invitation.id)
@@ -214,7 +208,7 @@ class DefaultConnectionService: ConnectionService {
 		record.endpoint = Endpoint(
             uri: invitation.endpoint,
             did: nil,
-            verkeys: routingKeys ?? []
+            verkeys: invitation.routingKeys ?? []
 		)
 		if invitation.label?.isEmpty == false || invitation.imageUrl?.isEmpty == false {
 			record.alias = ConnectionAlias(
@@ -227,14 +221,7 @@ class DefaultConnectionService: ConnectionService {
 		}
 
 		// Create request
-        var provisioning = try await provisioningService.getRecord(with: context)
-        
-        if provisioning.endpoint == nil {
-            provisioning.endpoint = Endpoint(uri: "http://example.org", did: did, verkeys: [verkey])
-        } else {
-            provisioning.endpoint!.verkeys.append(verkey)
-        }
-        
+        let provisioning = try await provisioningService.getRecord(with: context)
         let connection = Connection(
             did: record.myDid ?? "",
             document: record.myDocument(for: provisioning)
@@ -265,7 +252,6 @@ class DefaultConnectionService: ConnectionService {
 		// Investigate connection
 		let data = try await SignatureUtil.verify(message.signature)
 		let json = String(bytes: data, encoding: .utf8) ?? ""
-        print(json)
 		let connection: Connection = try JSONDecoder.shared.model(json)
 		let theirDid = connection.did
         let theirVerkey = connection.document?.keys?.first?.key
@@ -281,7 +267,7 @@ class DefaultConnectionService: ConnectionService {
 		record.theirDid = theirDid
 		record.theirVerkey = theirVerkey
 		record.state = .connected
-		record.tags[Tags.lastThreadId] = "message.threadId"
+		// record.tags[Tags.lastThreadId] = "message.threadId"
         if let endpoint = connection.document?.services?.first, let routingKeys = endpoint.routingKeys {
 			record.endpoint = Endpoint(
                 uri: endpoint.endpoint,

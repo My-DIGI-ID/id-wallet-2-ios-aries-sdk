@@ -44,7 +44,7 @@ public struct ConnectionRequestMessage: Message {
 		connection: Connection
 	) {
         self.id = id
-        self.type = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/request"
+        self.type = MessageType.connectionRequest.rawValue
         self.label = label
         self.imageUrl = imageUrl
         self.connection = connection
