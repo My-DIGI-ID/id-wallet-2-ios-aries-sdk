@@ -15,7 +15,7 @@ let package = Package(
 		.package(
             name: "Indy",
             url: "https://eu-de.git.cloud.ibm.com/blockchain-practice-dach/projects/ssi-bundeskanzleramt/id-wallet/ios-indy-sdk",
-            branch: "development"
+            .exact("0.1.0")
         )
 	],
     targets: [
