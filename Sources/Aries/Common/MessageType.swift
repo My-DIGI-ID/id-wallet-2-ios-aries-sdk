@@ -14,12 +14,20 @@
 import Foundation
 import Indy
 
-public enum MessageType: String {
+public enum MessageType: String, Codable {
+    // MARK: Connection
     case connectionInvitation = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/invitation"
     case connectionRequest = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/request"
     case connectionResponse = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/connections/1.0/response"
+    
+    // MARK: - Credential
     case credentialProposal = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/propose-credential"
     case credentialOffer = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/offer-credential"
     case credentialRequest = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/request-credential"
     case credentialIssue = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/issue-credential/1.0/issue-credential"
+    
+    // MARK: - Proposal
+    
+    // MARK: - Ack
+    case ack = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/notification/1.0/ack"
 }
