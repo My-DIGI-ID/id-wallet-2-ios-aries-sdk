@@ -93,7 +93,7 @@ class DefaultCredentialService: CredentialService {
             throw AriesError.notFound("My DID")
         }
 
-        let (_, definition) = try await ledgerService.credential(for: record.definition!, with: context)
+        let definition = try await ledgerService.credential(for: record.definition!, with: context)
         
         let (request, metadata) = try await AnonCreds.Prover.request(
             from: record.offer!,
@@ -140,8 +140,8 @@ class DefaultCredentialService: CredentialService {
                 throw AriesError.invalidType("Credential issue")
             }
         
-        let credentialDefinition = try await ledgerService.credential(for: credentialDefinitionId, with: context).1
-        let revocationDefinition = try await ledgerService.registry(for: revocationDefinitionId, with: context).1
+        let credentialDefinition = try await ledgerService.credential(for: credentialDefinitionId, with: context)
+        let revocationDefinition = try await ledgerService.registry(for: revocationDefinitionId, with: context)
         
         var record = try await recordService.search(
             CredentialRecord.self,

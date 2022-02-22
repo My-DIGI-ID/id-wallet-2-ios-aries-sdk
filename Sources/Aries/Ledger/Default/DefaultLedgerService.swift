@@ -15,24 +15,25 @@ import Foundation
 import Indy
 import IndyObjc
 
+/// Implementation of communication with Indy based ledgers.
 class DefaultLedgerService: LedgerService {
-    func credential(for id: String, with context: Context) async throws -> (String, String) {
+    func credential(for id: String, with context: Context) async throws -> String {
         guard let handle = context.pool as? IndyHandle else {
             throw AriesError.invalidType("Pool")
         }
         
         let request = try await Ledger.requestGetCredentialDefinition(for: id, with: nil)
         let result = try await Ledger.submit(request, to: handle)
-        return try await Ledger.responseGetCredentialDefinition(result)
+        return try await Ledger.responseGetCredentialDefinition(result).1
     }
     
-    func registry(for id: String, with context: Context) async throws -> (String, String) {
+    func registry(for id: String, with context: Context) async throws -> String {
         guard let handle = context.pool as? IndyHandle else {
             throw AriesError.invalidType("Pool")
         }
        
         let request = try await Ledger.requestGetRevocationRegistryDefinition(for: id, with: nil)
         let result = try await Ledger.submit(request, to: handle)
-        return try await Ledger.responseGetRevocationRegistryDefinition(result)
+        return try await Ledger.responseGetRevocationRegistryDefinition(result).1
     }
 }

@@ -33,7 +33,7 @@ class DefaultConnectionService: ConnectionService {
 
 	func createInvitation(
         for configuration: InvitationConfiguration,
-		with context: Context
+        with context: Context
 	) async throws -> (ConnectionInvitationMessage, ConnectionRecord) {
         guard let handle = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
@@ -59,7 +59,6 @@ class DefaultConnectionService: ConnectionService {
 			connection.tags[key] = value
 		}
 
-		// TODO: Replace with mediator information
         let provisioning = try await provisioningService.getRecord(with: context)
 
 		guard provisioning.endpoint?.uri.isEmpty == false else {
@@ -103,8 +102,8 @@ class DefaultConnectionService: ConnectionService {
 	}
 
 	func processRequest(
-		_ message: ConnectionRequestMessage,
-		with record: ConnectionRecord,
+        _ message: ConnectionRequestMessage,
+        with record: ConnectionRecord,
         _ context: Context
 	) async throws -> String {
         guard let handle = context.wallet as? IndyHandle else {
@@ -153,7 +152,7 @@ class DefaultConnectionService: ConnectionService {
 	}
 
 	func createResponse(
-		for id: String,
+        for id: String,
         with context: Context
 	) async throws -> (ConnectionResponseMessage, ConnectionRecord) {
 
@@ -166,7 +165,6 @@ class DefaultConnectionService: ConnectionService {
         try await recordService.update(record, in: context.wallet)
 
 		// Create response
-		// TODO: Replace with mediator information
         let provisioning = try await provisioningService.getRecord(with: context)
 		let connection = Connection(
 			did: record.myDid ?? "",
@@ -176,9 +174,6 @@ class DefaultConnectionService: ConnectionService {
 		let key = record.tags[Tags.connectionKey] ?? ""
 		let data = try JSONEncoder.shared.encode(connection)
         let signature = try await SignatureUtil.sign(data, with: key, context.wallet)
-
-		// TODO: Add Thread decorator when implemented
-		// let threadId = record.tags[Tags.lastThreadId]
 
 		let response = ConnectionResponseMessage(
 			signature: signature
@@ -190,7 +185,7 @@ class DefaultConnectionService: ConnectionService {
 	// MARK: - Flow as Receiver
 
 	func createRequest(
-		for invitation: ConnectionInvitationMessage,
+        for invitation: ConnectionInvitationMessage,
         with context: Context
 	) async throws -> (ConnectionRequestMessage, ConnectionRecord) {
         guard let handle = context.wallet as? IndyHandle else {
@@ -233,7 +228,7 @@ class DefaultConnectionService: ConnectionService {
             connection: connection
 		)
 
-		// TODO: Also add image url as attachment
+		// TODO: Also add image as attachment
 
         try await recordService.add(record, to: context.wallet)
 
@@ -241,8 +236,8 @@ class DefaultConnectionService: ConnectionService {
 	}
 
 	func processResponse(
-		_ message: ConnectionResponseMessage,
-		with record: ConnectionRecord,
+        _ message: ConnectionResponseMessage,
+        with record: ConnectionRecord,
         _ context: Context
 	) async throws -> String {
         guard let handle = context.wallet as? IndyHandle else {

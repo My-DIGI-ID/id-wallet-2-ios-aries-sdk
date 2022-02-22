@@ -24,7 +24,7 @@ public protocol ConnectionService {
 	/// - Parameter configuration: Custom parameters for the invitation.
 	/// - Returns: The sendable invitation message and the created record for the connection.
 	func createInvitation(
-		for configuration: InvitationConfiguration,
+        for configuration: InvitationConfiguration,
         with context: Context
 	) async throws -> (ConnectionInvitationMessage, ConnectionRecord)
 
@@ -33,7 +33,7 @@ public protocol ConnectionService {
 	/// - Parameter connectionId: The identifier of the connection created with the invitation.
 	/// - Parameter wallet: The wallet where the connection is stored.
 	func revokeInvitation(
-		for connectionId: String,
+        for connectionId: String,
         with context: Context
 	) async throws
 
@@ -44,8 +44,8 @@ public protocol ConnectionService {
 	/// - Parameter wallet: The wallet to update the record.
 	/// - Returns: The connection identifier.
 	func processRequest(
-		_ request: ConnectionRequestMessage,
-		with record: ConnectionRecord,
+        _ request: ConnectionRequestMessage,
+        with record: ConnectionRecord,
         _ context: Context
 	) async throws -> String
 
@@ -57,7 +57,7 @@ public protocol ConnectionService {
 	/// - Parameter wallet: The wallet containing the connection record.
 	/// - Returns: The sendable response message and the updated record for the connection.
 	func createResponse(
-		for id: String,
+        for id: String,
         with context: Context
 	) async throws -> (ConnectionResponseMessage, ConnectionRecord)
 
@@ -70,7 +70,7 @@ public protocol ConnectionService {
 	/// - Parameter wallet: The wallet to store the connection.
 	/// - Returns: The sendable request message and the created record for the connection.
 	func createRequest(
-		for invitation: ConnectionInvitationMessage,
+        for invitation: ConnectionInvitationMessage,
         with context: Context
 	) async throws -> (ConnectionRequestMessage, ConnectionRecord)
 
@@ -83,8 +83,8 @@ public protocol ConnectionService {
 	/// - Parameter wallet: The wallet to update the record.
 	/// - Returns: The connection identifier.
 	func processResponse(
-		_ response: ConnectionResponseMessage,
-		with record: ConnectionRecord,
+        _ response: ConnectionResponseMessage,
+        with record: ConnectionRecord,
         _ context: Context
 	) async throws -> String
 }

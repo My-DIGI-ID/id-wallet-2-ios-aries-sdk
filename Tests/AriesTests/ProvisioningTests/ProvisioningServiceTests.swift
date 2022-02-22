@@ -11,6 +11,8 @@
 // specific language governing permissions and limitations under the License.
 //
 
+// swiftlint:disable inclusive_language
+
 @testable import Aries
 import Indy
 import IndyObjc

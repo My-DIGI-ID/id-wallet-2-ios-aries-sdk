@@ -13,8 +13,19 @@
 
 import Foundation
 
+/// Service definition for reading data from the ledger.
 public protocol LedgerService {
-    func credential(for id: String, with context: Context) async throws -> (String, String)
+    /// Gets the definition of the credential from the ledger.
+    ///
+    /// - Parameter id: The identifier of the of registry
+    /// - Parameter context: The context containing the ledger connection.
+    /// - Returns: The identifier and definition of the credential.
+    func credential(for id: String, with context: Context) async throws -> String
     
-    func registry(for id: String, with context: Context) async throws -> (String, String)
+    /// Gets the definition of the revocation registry from the ledger.
+    ///
+    /// - Parameter id: The identifier of the of registry.
+    /// - Parameter context: The context containing the ledger connection.
+    /// - Returns: The identifier and defintion of the revocation registry
+    func registry(for id: String, with context: Context) async throws -> String
 }
