@@ -45,10 +45,6 @@ class WalletServiceTests: XCTestCase {
     func test_all_operations_with_raw() async throws {
         try await test(with: .raw, try await DefaultWalletService.generateKey())
     }
-    
-    func test_all_operations_with_raw_no_base58() async throws {
-        try await test(with: .raw, "9AdhysU")
-    }
 
     private func test(with method: KeyDerivationMethod?, _ key: String) async throws {
 		let config = WalletConfiguration(id: UUID().uuidString)
