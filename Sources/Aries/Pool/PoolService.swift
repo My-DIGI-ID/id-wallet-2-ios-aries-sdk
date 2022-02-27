@@ -13,12 +13,28 @@
 
 import Foundation
 
+/// Service for handling connections to the underlying pool of the ledger.
 public protocol PoolService {
+    /// Create a configuration for later connections.
+    ///
+    /// - Parameter name: The name of the configuration
+    /// - Parameter genesis: The path to the genesis file needed to establish the connection.
     func create(with name: String, _ genenis: String) async throws
     
+    /// Establish a connection to the pool defined in the configuration.
+    ///
+    /// - Parameter name: The name of the configuration
+    /// - Returns: The pool connection.
     func get(for name: String) async throws -> Pool
     
+    /// Close an existing connection to a pool
+    ///
+    /// - Parameter pool: The pool connection to be closed.
     func close(_ pool: Pool) async throws
     
+    /// Delete a configuration.
+    ///
+    /// - Parameter name: The name of the configuration.
+    /// - Warning: Connections using this configuration must be closed before deletion.
     func delete(for name: String) async throws
 }

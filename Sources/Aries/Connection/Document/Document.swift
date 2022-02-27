@@ -50,7 +50,7 @@ public struct Document: Codable {
     public var delegations: [VerificationMethod]?
 	/// The public keys related to the subject used for verification.
 	public var keys: [DocumentKey]?
-	/// The exposed services for further communicate with the subject.
+	/// The exposed services for further communication with the subject.
 	public var services: [DocumentService]?
 
 	init(id: String) {

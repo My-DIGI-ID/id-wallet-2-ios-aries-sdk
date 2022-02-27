@@ -11,12 +11,29 @@
 // specific language governing permissions and limitations under the License.
 //
 
+/// Message for handling information associated to this provisioned agent.
 public protocol ProvisioningService {
+    /// Get the record containing the provisioning data.
+    ///
+    /// - Parameter context: The context to run in.
+    /// - Returns: The provisioning record.
     func getRecord(with context: Context) async throws -> ProvisioningRecord
     
+    /// Update the endpoint information of this agent.
+    ///
+    /// - Parameter endpoint: The new endpoint
+    /// - Parameter context: The context to run in.
     func update(_ endpoint: Endpoint, with context: Context) async throws
     
+    /// Update the presentable information of the subject owning this agent.
+    ///
+    /// - Parameter owner: The new owner information.
+    /// - Parameter context: The context to run in.
     func update(_ owner: Owner, with context: Context) async throws
     
+    /// Update the identifier of the master secret.
+    ///
+    /// - Parameter masterSecretId: The identifier of the new master secret.
+    /// - Parameter context: The context to run in.
     func update(_ masterSecretId: String, with context: Context) async throws
 }

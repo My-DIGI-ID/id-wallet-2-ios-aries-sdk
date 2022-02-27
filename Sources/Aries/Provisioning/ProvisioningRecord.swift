@@ -15,14 +15,21 @@
 
 import Foundation
 
+/// Record containing information about a provisioned agent.
 public struct ProvisioningRecord: Record {
 	public static let uniqueId: String = "SingleRecord"
 	public static let type: String = "ProvisioningRecord"
 
+    /// The identfier of the record.
+    ///
+    /// This identifier can be constant since we only need a single record for the provisioning.
 	public var id: String { Self.uniqueId }
+    /// Additional tags
 	public var tags: [String: String] = [:]
-
+    /// Owner of an agent.
 	public var owner: Owner?
+    /// Endpoint to contact the provisioned agent.
 	public var endpoint: Endpoint?
+    /// The id of the master secret.
     public var masterSecretId: String?
 }

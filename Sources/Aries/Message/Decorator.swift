@@ -11,4 +11,5 @@
 // specific language governing permissions and limitations under the License.
 //
 
+/// A marker for additional protocol agnostic information in a message.
 public protocol Decorator: Codable {}

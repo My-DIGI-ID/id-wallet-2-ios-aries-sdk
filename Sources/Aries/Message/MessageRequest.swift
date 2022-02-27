@@ -13,11 +13,17 @@
 
 import Foundation
 
+/// The container for a sendable message.
 public struct MessageRequest<M: Message> {
+    /// The message to be sent.
     public let message: M
+    /// The verkey of the recipients of this message.
     public let recipientKeys: [String]
+    /// The verkey of the sending agent.
     public let senderKey: String?
+    /// Additional headers for the transport level request.
     public let headers: [String: String]
+    /// The actual endpoint the message should be sent to
     public let endpoint: String
     
     public init(

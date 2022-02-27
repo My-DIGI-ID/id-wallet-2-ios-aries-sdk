@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// Structure for a single attribute of a credential
 public struct CredentialAttribute: Codable {
     private enum CodingKeys: String, CodingKey {
         case name
@@ -20,8 +21,11 @@ public struct CredentialAttribute: Codable {
         case value
     }
     
+    /// The key of the attribute
     public let name: String
+    /// The type for the case of complex data
     public let mimeType: String?
+    /// The value of the attribute
     public let value: String
     
     public init(
@@ -33,6 +37,9 @@ public struct CredentialAttribute: Codable {
         self.value = value
     }
     
+    /// Constructor for declaring other data than a simple key value pair.
+    ///
+    /// When defining an attribute of arbitrary form, we need to set a mime type and store the data as base64.
     public init(
         name: String,
         mimeType: String,

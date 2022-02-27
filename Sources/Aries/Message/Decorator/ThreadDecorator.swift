@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// Decorator containing information of the history of the message flow.
 public struct ThreadDecorator: Decorator {
     private enum CodingKeys: String, CodingKey {
         case threadId = "thid"

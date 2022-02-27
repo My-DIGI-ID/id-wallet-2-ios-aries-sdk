@@ -13,7 +13,10 @@
 
 import Foundation
 
+/// The container for a received message from a optionally known sender.
 public struct MessageResponse<T: Message> {
+    /// The received message.
     public let message: T
+    /// The verkey of the sender.
     public let sender: String?
 }

@@ -81,7 +81,6 @@ class DefaultCredentialService: CredentialService {
         
         var record = try await recordService.get(CredentialRecord.self, for: credentialId, from: context.wallet)
         let provisioning = try await provisioningService.getRecord(with: context)
-        let did: String
         
         guard let connectionId = record.connection else {
             throw AriesError.notFound("Connection ID")

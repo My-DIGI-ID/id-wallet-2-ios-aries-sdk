@@ -262,7 +262,6 @@ class DefaultConnectionService: ConnectionService {
 		record.theirDid = theirDid
 		record.theirVerkey = theirVerkey
 		record.state = .connected
-		// record.tags[Tags.lastThreadId] = "message.threadId"
         if let endpoint = connection.document?.services?.first, let routingKeys = endpoint.routingKeys {
 			record.endpoint = Endpoint(
                 uri: endpoint.endpoint,

@@ -13,4 +13,5 @@
 
 import Foundation
 
+/// A marker for pool connections.
 public protocol Pool {}

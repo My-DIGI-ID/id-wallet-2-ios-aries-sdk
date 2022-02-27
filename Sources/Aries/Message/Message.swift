@@ -17,9 +17,9 @@ import Foundation
 ///
 /// When coding custom message types, id and type must be prefixed with @
 /// as these are reserved names.
-///
-/// Todo: Add decorators, encoded decorators need to prefix their name with ~.
 public protocol Message: Codable {
+    /// The identifier of this message.
 	var id: String { get }
+    /// The type of this message.
 	var type: String { get }
 }

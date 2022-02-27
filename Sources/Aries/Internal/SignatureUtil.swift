@@ -15,7 +15,8 @@ import Foundation
 import Indy
 import IndyObjc
 
-enum SignatureUtil {
+/// Functionalities for creating signatures.
+public enum SignatureUtil {
 	private static let defaultSignatureType = "did:sov:BzCbsNYhMrjHiqZDTUASHg;spec/signature/1.0/ed25519Sha512_single"
     private static let charPadding = "="
     private static let char62 = "+"
@@ -23,7 +24,13 @@ enum SignatureUtil {
     private static let charUrl62 = "-"
     private static let charUrl63 = "_"
     
-	static func sign(
+    /// Create a signature.
+    ///
+    /// - Parameter data: The data to be signed.
+    /// - Parameter key: The key used for signing
+    /// - Parameter wallet: The wallet containing the key information.
+    /// - Returns: The signature.
+	public static func sign(
 		_ data: Data,
 		with key: String,
 		_ wallet: Wallet
@@ -45,7 +52,11 @@ enum SignatureUtil {
 		)
 	}
 
-	static func verify(_ decorator: SignatureDecorator) async throws -> Data {
+    /// Verifies a signature and unpacks the signed data.
+    ///
+    /// - Parameter decorator: The signature.
+    /// - Returns: The signed data.
+	public static func verify(_ decorator: SignatureDecorator) async throws -> Data {
         let signature = try decode(decorator.signature)
         let signatureData = try decode(decorator.data)
 

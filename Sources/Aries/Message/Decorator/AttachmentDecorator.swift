@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// Decorator for attaching data to a message.
 public struct AttachmentDecorator: Decorator {
     private enum CodingKeys: String, CodingKey {
         case id = "@id"

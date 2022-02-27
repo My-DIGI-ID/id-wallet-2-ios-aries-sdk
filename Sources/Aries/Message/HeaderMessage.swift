@@ -21,7 +21,8 @@ public struct HeaderMessage: Message {
         case id = "@id"
         case type = "@type"
     }
-    
+    /// The identifier of this message.
     public let id: String
+    /// The type of this message.
     public let type: String
 }

@@ -15,18 +15,38 @@ import Foundation
 
 /// Service for requesting and retrieving credentials.
 public protocol CredentialService {
+    /// This creates an empty proposal.
+    ///
+    /// TODO: This function needs to be extended by a configuration or removed entirely.
+    /// - Returns: A proposal message for the issuer.
     func proposal() async throws -> CredentialProposalMessage
     
+    /// Process a received offer for a credential.
+    ///
+    /// - Parameter offer: The offer message.
+    /// - Parameter connectionId: The id of the connection associated with issuing process.
+    /// - Parameter context: The context to execute in.
+    /// - Returns: The identifier of the created credential record.
     func process(
         _ offer: CredentialOfferMessage,
         for connectionId: String,
         with context: Context
     ) async throws -> String
     
+    /// Create a request for a credential after an offer.
+    ///
+    /// - Parameter credentialId: The id of the credential record the request should be based on.
+    /// - Parameter context: The context to execute in.
+    /// - Returns: The sendable request message.
     func request(
         for credentialId: String,
         with context: Context
     ) async throws -> CredentialRequestMessage
     
+    /// Process a message containing an issued credential.
+    ///
+    /// - Parameter credentials: The issue message.
+    /// - Parameter context: The context to execute in.
+    /// - Returns: The identifier of the created credential record.
     func process(_ credentials: CredentialIssueMessage, with context: Context) async throws -> String
 }

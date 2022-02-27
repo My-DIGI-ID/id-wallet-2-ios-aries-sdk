@@ -11,8 +11,11 @@
 // specific language governing permissions and limitations under the License.
 //
 
+/// Information describing the owner of an agent.
 public struct Owner: Codable {
+    /// The name of the owner.
 	public let name: String?
+    /// The URL to a profile image.
 	public let imageUrl: String?
     
     public init(

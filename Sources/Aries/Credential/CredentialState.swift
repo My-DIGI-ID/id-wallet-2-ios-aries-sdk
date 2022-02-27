@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// The different states of the credential record in the issuing process.
 public enum CredentialState: Codable {
     case offered
     case requested

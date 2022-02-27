@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// Message for offering a credential to a potential holder.
 public struct CredentialOfferMessage: Message {
     private enum CodingKeys: String, CodingKey {
         case id = "@id"

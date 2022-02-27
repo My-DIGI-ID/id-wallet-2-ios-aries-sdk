@@ -22,6 +22,8 @@
 /// 				These properties can be only addressed in query filters, when used with (un)equality operators.
 public protocol Record: Codable {
 	static var type: String { get }
+    /// The identifier of the record
 	var id: String { get }
+    /// The additional tags.
 	var tags: [String: String] { get set }
 }

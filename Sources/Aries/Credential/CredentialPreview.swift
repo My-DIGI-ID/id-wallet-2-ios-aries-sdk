@@ -13,13 +13,20 @@
 
 import Foundation
 
+/// Container for all attributes of a potentially issued credential.
+///
+/// This is the actual data of a credential. It can and should be used for display.
 public struct CredentialPreview: Codable {
     private enum CodingKeys: String, CodingKey {
         case type = "@type"
         case attributes
     }
  
+    /// The type identifier of the preview.
+    ///
+    /// Although this is isn't a message in itself, it is a closed object in terms of the RFC and requires its own type.
     public let type: String
+    /// The attributes of the credential.
     public var attributes: [CredentialAttribute] = []
     
     public init() {

@@ -11,7 +11,7 @@
 // specific language governing permissions and limitations under the License.
 //
 
-/// Structure containing service information providing a way to
+/// Structure containing service information providing a way to communicate with the subject
 public struct DocumentService: Codable {
     private enum CodingKeys: String, CodingKey {
         case id
@@ -19,7 +19,6 @@ public struct DocumentService: Codable {
         case priority
         case recipientKeys
         case routingKeys
-        case accept
         case endpoint = "serviceEndpoint"
     }
 
@@ -27,14 +26,12 @@ public struct DocumentService: Codable {
 	public let id: String
 	/// The type of the service. Should be registered in the specification registries.
 	public let type: String
-    ///
+    /// The priority of the service compared to others in this document.
     public var priority: Int?
 	/// The public keys of the recipients.
 	public var recipientKeys: [String]?
 	/// The public keys of the routing points.
 	public var routingKeys: [String]?
-    /// 
-    public var accept: [String]?
     /// The actual uri to send messages to.
     public var endpoint: String
     

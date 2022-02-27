@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// The record persisting all infromationen of an ongoing or completed credential issuing.
 public struct CredentialRecord: Record {
     public static var type: String = "Aries.Credential"
     public let id: String

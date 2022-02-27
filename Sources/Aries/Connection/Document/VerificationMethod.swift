@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// This describes cryptographic material for various use cases related to a DID document.
 public enum VerificationMethod: Codable {
     case reference(String)
     case embedded(

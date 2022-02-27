@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// A service to provide send and receive functionality including packing.
 public protocol MessageService {
     /// Sends a message to another agent with a potential response.
     ///
