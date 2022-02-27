@@ -18,9 +18,9 @@ import IndyObjc
 /// This a ready-to-use implementation of the ``RecordService`` based on the wallet in Hyperledger Indy.
 ///
 /// These functions directly pass through to the iOS wrapper and the underlying Indy implementation.
-class DefaultRecordService: RecordService {
-    func add<T: Record>(_ record: T, to wallet: Wallet) async throws {
-		guard let wallet = wallet as? IndyHandle else {
+public class DefaultRecordService: RecordService {
+    public func add<T: Record>(_ record: T, with context: Context) async throws {
+        guard let wallet = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 
@@ -33,8 +33,8 @@ class DefaultRecordService: RecordService {
         )
     }
 
-    func get<T: Record>(_: T.Type, for id: String, from wallet: Wallet) async throws -> T {
-		guard let wallet = wallet as? IndyHandle else {
+    public func get<T: Record>(_: T.Type, for id: String, with context: Context) async throws -> T {
+        guard let wallet = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 
@@ -53,8 +53,8 @@ class DefaultRecordService: RecordService {
 		return record
     }
 
-    func update<T: Record>(_ record: T, in wallet: Wallet) async throws {
-		guard let wallet = wallet as? IndyHandle else {
+    public func update<T: Record>(_ record: T, with context: Context) async throws {
+        guard let wallet = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 
@@ -73,8 +73,8 @@ class DefaultRecordService: RecordService {
         )
     }
 
-    func delete<T: Record>(_: T.Type, with id: String, in wallet: Wallet) async throws {
-		guard let wallet = wallet as? IndyHandle else {
+    public func delete<T: Record>(_: T.Type, for id: String, with context: Context) async throws {
+        guard let wallet = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 
@@ -94,14 +94,14 @@ class DefaultRecordService: RecordService {
         try await NonSecrets.deleteRecord(to: wallet, type: T.type, id: id)
     }
 
-    func search<T: Record>(
+    public func search<T: Record>(
         _: T.Type,
-        in wallet: Wallet,
-        with query: SearchQuery,
+        with context: Context,
+        matching query: SearchQuery,
         count: Int?,
         skip: Int?
     ) async throws -> [T] {
-		guard let wallet = wallet as? IndyHandle else {
+        guard let wallet = context.wallet as? IndyHandle else {
 			throw AriesError.invalidType("Wallet")
 		}
 

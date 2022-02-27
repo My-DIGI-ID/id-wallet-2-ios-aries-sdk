@@ -15,7 +15,7 @@ import Foundation
 import Indy
 import IndyObjc
 
-class DefaultCredentialService: CredentialService {
+public class DefaultCredentialService: CredentialService {
     
     private let recordService: RecordService
     private let provisioningService: ProvisioningService
@@ -31,13 +31,13 @@ class DefaultCredentialService: CredentialService {
         self.ledgerService = ledgerService
     }
     
-    func proposal() async throws -> CredentialProposalMessage {
+    public func proposal() async throws -> CredentialProposalMessage {
         var message = CredentialProposalMessage()
         message.transport = TransportDecorator(mode: .all)
         return message
     }
     
-    func process(
+    public func process(
         _ message: CredentialOfferMessage,
         for connectionId: String,
         with context: Context
@@ -66,12 +66,12 @@ class DefaultCredentialService: CredentialService {
         record.tags[Tags.connectionKey] = connectionId
         record.tags[Tags.lastThreadId] = message.thread?.threadId ?? message.id
                 
-        try await recordService.add(record, to: context.wallet)
+        try await recordService.add(record, with: context)
         
         return record.id
     }
     
-    func request(
+    public func request(
         for credentialId: String,
         with context: Context
     ) async throws -> CredentialRequestMessage {
@@ -79,14 +79,14 @@ class DefaultCredentialService: CredentialService {
             throw AriesError.invalidType("Wallet")
         }
         
-        var record = try await recordService.get(CredentialRecord.self, for: credentialId, from: context.wallet)
+        var record = try await recordService.get(CredentialRecord.self, for: credentialId, with: context)
         let provisioning = try await provisioningService.getRecord(with: context)
         
         guard let connectionId = record.connection else {
             throw AriesError.notFound("Connection ID")
         }
         
-        let connection = try await recordService.get(ConnectionRecord.self, for: connectionId, from: context.wallet)
+        let connection = try await recordService.get(ConnectionRecord.self, for: connectionId, with: context)
         
         guard let did = connection.myDid else {
             throw AriesError.notFound("My DID")
@@ -103,7 +103,7 @@ class DefaultCredentialService: CredentialService {
         )
         
         record.metadata = metadata
-        try await recordService.update(record, in: context.wallet)
+        try await recordService.update(record, with: context)
         
         // Message
         let attachment = AttachmentDecorator(
@@ -120,7 +120,7 @@ class DefaultCredentialService: CredentialService {
         return message
     }
     
-    func process(_ message: CredentialIssueMessage, with context: Context) async throws -> String {
+    public func process(_ message: CredentialIssueMessage, with context: Context) async throws -> String {
         guard let handle = context.wallet as? IndyHandle else {
             throw AriesError.invalidType("Wallet")
         }
@@ -144,8 +144,8 @@ class DefaultCredentialService: CredentialService {
         
         var record = try await recordService.search(
             CredentialRecord.self,
-            in: context.wallet,
-            with: .equal(name: Tags.lastThreadId, value: message.thread!.threadId!),
+            with: context,
+            matching: .equal(name: Tags.lastThreadId, value: message.thread!.threadId!),
             count: 1,
             skip: 0
         ).first!
@@ -162,7 +162,7 @@ class DefaultCredentialService: CredentialService {
         record.credential = credentialId
         record.revocation = revocationDefinitionId
         
-        try await recordService.update(record, in: context.wallet)
+        try await recordService.update(record, with: context)
         
         return record.id
     }

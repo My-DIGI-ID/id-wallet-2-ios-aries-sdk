@@ -14,7 +14,7 @@
 import Indy
 import IndyObjc
 
-class DefaultProvisioningService: ProvisioningService {
+public class DefaultProvisioningService: ProvisioningService {
 
 	private let recordService: RecordService
 
@@ -22,39 +22,39 @@ class DefaultProvisioningService: ProvisioningService {
 		self.recordService = recordService
 	}
     
-    func getRecord(with context: Context) async throws -> ProvisioningRecord {
+    public func getRecord(with context: Context) async throws -> ProvisioningRecord {
         do {
             return try await recordService.get(
                 ProvisioningRecord.self,
                 for: ProvisioningRecord.uniqueId,
-                from: context.wallet
+                with: context
             )
         } catch {
             let record = ProvisioningRecord()
-            try await recordService.add(record, to: context.wallet)
+            try await recordService.add(record, with: context)
             return record
         }
 	}
     
-    func update(_ owner: Owner, with context: Context) async throws {
+    public func update(_ owner: Owner, with context: Context) async throws {
         var record = try await getRecord(with: context)
         record.owner = owner
-        try await recordService.update(record, in: context.wallet)
+        try await recordService.update(record, with: context)
     }
     
-    func update(_ endpoint: Endpoint, with context: Context) async throws {
+    public func update(_ endpoint: Endpoint, with context: Context) async throws {
         var record = try await getRecord(with: context)
         record.endpoint = endpoint
-        try await recordService.update(record, in: context.wallet)
+        try await recordService.update(record, with: context)
     }
     
-    func update(_ masterSecretId: String, with context: Context) async throws {
+    public func update(_ masterSecretId: String, with context: Context) async throws {
         guard let handle = context.wallet as? IndyHandle else {
             throw AriesError.invalidType("Wallet")
         }
         
         var record = try await getRecord(with: context)
         record.masterSecretId = try await Indy.AnonCreds.Prover.masterSecret(with: masterSecretId, in: handle)
-        try await recordService.update(record, in: context.wallet)
+        try await recordService.update(record, with: context)
     }
 }

@@ -15,6 +15,14 @@ import Indy
 
 /// Container for data for handling an Indy based wallet.
 public struct DefaultWalletData: WalletData {
-	let configuration: WalletConfiguration
-	let credentials: WalletCredentials
+	public let configuration: WalletConfiguration
+	public let credentials: WalletCredentials
+
+    public init(
+        configuration: WalletConfiguration,
+        credentials: WalletCredentials
+    ) {
+        self.configuration = configuration
+        self.credentials = credentials
+    }
 }

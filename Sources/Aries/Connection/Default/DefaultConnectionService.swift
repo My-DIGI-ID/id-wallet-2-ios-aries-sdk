@@ -16,7 +16,7 @@ import IndyObjc
 import Darwin
 
 /// Implementation of did exchange based on Indy functionalities.
-class DefaultConnectionService: ConnectionService {
+public class DefaultConnectionService: ConnectionService {
 
 	private let recordService: RecordService
 	private let provisioningService: ProvisioningService
@@ -31,7 +31,7 @@ class DefaultConnectionService: ConnectionService {
 
 	// MARK: - Flow As Initiator
 
-	func createInvitation(
+    public func createInvitation(
         for configuration: InvitationConfiguration,
         with context: Context
 	) async throws -> (ConnectionInvitationMessage, ConnectionRecord) {
@@ -65,7 +65,7 @@ class DefaultConnectionService: ConnectionService {
 			throw AriesError.notFound("Provisioning Endpoint")
 		}
 
-        try await recordService.add(connection, to: context.wallet)
+        try await recordService.add(connection, with: context)
 
 		// TODO: Use DID utility
 		let routingKeys: [String]
@@ -91,17 +91,17 @@ class DefaultConnectionService: ConnectionService {
 		return (message, connection)
 	}
 
-    func revokeInvitation(for connectionId: String, with context: Context) async throws {
-        let record = try await recordService.get(ConnectionRecord.self, for: connectionId, from: context.wallet)
+    public func revokeInvitation(for connectionId: String, with context: Context) async throws {
+        let record = try await recordService.get(ConnectionRecord.self, for: connectionId, with: context)
 
 		guard record.state == .invited else {
             throw AriesError.illegalState("Expected \(ConnectionState.invited), found: \(record.state)")
 		}
 
-        try await recordService.delete(ConnectionRecord.self, with: connectionId, in: context.wallet)
+        try await recordService.delete(ConnectionRecord.self, for: connectionId, with: context)
 	}
 
-	func processRequest(
+    public func processRequest(
         _ message: ConnectionRequestMessage,
         with record: ConnectionRecord,
         _ context: Context
@@ -130,7 +130,7 @@ class DefaultConnectionService: ConnectionService {
 		if !record.multiParty {
 			record.state = .negotiating
 
-            try await recordService.update(record, in: context.wallet)
+            try await recordService.update(record, with: context)
 
 			return record.id
 		} else {
@@ -145,24 +145,24 @@ class DefaultConnectionService: ConnectionService {
 			new.state = .negotiating
 			new.tags = record.tags
 
-            try await recordService.add(new, to: context.wallet)
+            try await recordService.add(new, with: context)
 
 			return new.id
 		}
 	}
 
-	func createResponse(
+    public func createResponse(
         for id: String,
         with context: Context
 	) async throws -> (ConnectionResponseMessage, ConnectionRecord) {
 
 		// Update record
-        var record = try await recordService.get(ConnectionRecord.self, for: id, from: context.wallet)
+        var record = try await recordService.get(ConnectionRecord.self, for: id, with: context)
 		guard record.state == .negotiating else {
             throw AriesError.illegalState("Expected \(ConnectionState.negotiating), found \(record.state)")
 		}
 		record.state = .connected
-        try await recordService.update(record, in: context.wallet)
+        try await recordService.update(record, with: context)
 
 		// Create response
         let provisioning = try await provisioningService.getRecord(with: context)
@@ -184,7 +184,7 @@ class DefaultConnectionService: ConnectionService {
 
 	// MARK: - Flow as Receiver
 
-	func createRequest(
+    public func createRequest(
         for invitation: ConnectionInvitationMessage,
         with context: Context
 	) async throws -> (ConnectionRequestMessage, ConnectionRecord) {
@@ -230,12 +230,12 @@ class DefaultConnectionService: ConnectionService {
 
 		// TODO: Also add image as attachment
 
-        try await recordService.add(record, to: context.wallet)
+        try await recordService.add(record, with: context)
 
 		return (request, record)
 	}
 
-	func processResponse(
+    public func processResponse(
         _ message: ConnectionResponseMessage,
         with record: ConnectionRecord,
         _ context: Context
@@ -270,7 +270,7 @@ class DefaultConnectionService: ConnectionService {
 			)
 		}
 
-        try await recordService.update(record, in: context.wallet)
+        try await recordService.update(record, with: context)
 
 		return record.id
 	}

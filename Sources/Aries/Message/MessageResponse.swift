@@ -19,4 +19,12 @@ public struct MessageResponse<T: Message> {
     public let message: T
     /// The verkey of the sender.
     public let sender: String?
+    
+    public init(
+        message: T,
+        sender: String? = nil
+    ) {
+        self.message = message
+        self.sender = sender
+    }
 }

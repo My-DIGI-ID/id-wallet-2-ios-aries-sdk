@@ -17,9 +17,19 @@ import Indy
 public class DefaultAgentService: AgentService {
 
     private var context: Context?
+    private var data: (String, String) -> WalletData = { (id, key) in
+        DefaultWalletData(
+            configuration: WalletConfiguration(id: id),
+            credentials: WalletCredentials(key: key)
+        )
+    }
+    
+    public func data(_ factory: @escaping (String, String) -> WalletData) {
+        data = factory
+    }
     
     public func initialize(with id: String, _ key: String, _ genesis: String) async throws {
-        try await Aries.wallet.create(for: data(for: id, key))
+        try await Aries.wallet.create(for: data(id, key))
         try await Aries.pool.create(with: id, genesis)
     }
     
@@ -28,13 +38,13 @@ public class DefaultAgentService: AgentService {
             throw AriesError.unclosedWallet("Agent must be closed before destruction.")
         }
         
-        try await Aries.wallet.delete(for: data(for: id, key))
+        try await Aries.wallet.delete(for: data(id, key))
         try await Aries.pool.delete(for: id)
     }
     
     public func open(with id: String, _ key: String) async throws {
         context = Context(
-            wallet: try await Aries.wallet.get(for: data(for: id, key)),
+            wallet: try await Aries.wallet.get(for: data(id, key)),
             pool: try await Aries.pool.get(for: id)
         )
     }
@@ -54,13 +64,6 @@ public class DefaultAgentService: AgentService {
         }
         
         return try await closure(context)
-    }
-    
-    private func data(for id: String, _ key: String) -> WalletData {
-        DefaultWalletData(
-            configuration: WalletConfiguration(id: id),
-            credentials: WalletCredentials(key: key)
-        )
     }
     
     deinit {

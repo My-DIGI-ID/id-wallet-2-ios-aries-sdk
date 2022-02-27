@@ -64,7 +64,7 @@ class ProvisioningServiceTests: XCTestCase {
 		// Arrange
 		let owner = Owner(name: "Tester", imageUrl: nil)
 		let expected = ProvisioningRecord(owner: owner)
-        try await recordService.add(expected, to: context.wallet)
+        try await recordService.add(expected, with: context)
 
 		// Act
         let actual = try await service.getRecord(with: context)
@@ -82,7 +82,7 @@ class ProvisioningServiceTests: XCTestCase {
 		// Arrange
 		let owner = Owner(name: "Tester", imageUrl: nil)
 		let record = ProvisioningRecord(owner: owner)
-        try await recordService.add(record, to: context.wallet)
+        try await recordService.add(record, with: context)
 
 		// Act
 		let first = try await service.getRecord(with: context)

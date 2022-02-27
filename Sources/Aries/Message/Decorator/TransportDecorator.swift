@@ -15,6 +15,12 @@ import Foundation
 
 /// Decorator for indicating that a response message is valid in the HTTP responses.
 public struct TransportDecorator: Decorator {
+    public enum ReturnMode: String, Codable {
+        case all
+        case none
+        case thread
+    }
+    
     private enum CodingKeys: String, CodingKey {
         case mode = "return_route"
     }
@@ -25,10 +31,4 @@ public struct TransportDecorator: Decorator {
     public init(mode: ReturnMode = .all) {
         self.mode = mode
     }
-}
-
-public enum ReturnMode: String, Codable {
-    case all
-    case none
-    case thread
 }

@@ -94,8 +94,8 @@ class ConnectionServiceTests: XCTestCase {
 		let owner = Owner(name: "Tester", imageUrl: nil)
 		let endpoint = Endpoint(uri: "uri", did: "did", verkeys: ["verkey"])
 		let provisioning = ProvisioningRecord(owner: owner, endpoint: endpoint)
-        try await recordService.add(provisioning, to: context0.wallet)
-        try await recordService.add(provisioning, to: context1.wallet)
+        try await recordService.add(provisioning, with: context0)
+        try await recordService.add(provisioning, with: context1)
 
 		// Act
 		let (invitation, recordInvitation) = try await connectionService
@@ -112,8 +112,8 @@ class ConnectionServiceTests: XCTestCase {
         let id1 = try await connectionService.processResponse(response, with: recordRequest, context1)
 
 		// Assert
-        let record0 = try await recordService.get(ConnectionRecord.self, for: id0, from: context0.wallet)
-        let record1 = try await recordService.get(ConnectionRecord.self, for: id1, from: context1.wallet)
+        let record0 = try await recordService.get(ConnectionRecord.self, for: id0, with: context0)
+        let record1 = try await recordService.get(ConnectionRecord.self, for: id1, with: context1)
 
 		XCTAssertEqual(record0.state, .connected)
 		XCTAssertEqual(record1.state, .connected)

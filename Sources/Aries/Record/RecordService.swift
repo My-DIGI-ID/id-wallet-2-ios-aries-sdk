@@ -19,44 +19,44 @@ public protocol RecordService {
     ///
     /// - Parameters:
     /// 	- record: The record to be inserted
-    /// 	- wallet: The wallet where the record should be added to
-    func add<T: Record>(_ record: T, to wallet: Wallet) async throws
+    /// 	- context: The context to operate in.
+    func add<T: Record>(_ record: T, with context: Context) async throws
 
     /// Get a single record for a specific id and type from the referenced wallet.
     ///
     /// - Parameters:
     /// 	- type: The class of the record to get
     /// 	- id: The unique id of the record
-    /// 	- wallet: The wallet where the record is stored
-    func get<T: Record>(_: T.Type, for id: String, from wallet: Wallet) async throws -> T
+    ///     - context: The context to operate in.
+    func get<T: Record>(_: T.Type, for id: String, with context: Context) async throws -> T
 
     /// Override an existing record with the same type and id in the referenced wallet.
     ///
     /// - Parameters:
     /// 	- record: The record to be updated
-    /// 	- wallet: The wallet where the record should be updated
-    func update<T: Record>(_ record: T, in wallet: Wallet) async throws
+    ///     - context: The context to operate in.
+    func update<T: Record>(_ record: T, with context: Context) async throws
 
     /// Delete the record with the type and unique id in the referenced wallet.
     ///
     /// - Parameters:
     /// 	- type: The class of the record to be deleted
     /// 	- id: The unique id of the record
-    /// 	- wallet: The wallet where the record should be deleted from
-    func delete<T: Record>(_: T.Type, with id: String, in wallet: Wallet) async throws
+    ///     - context: The context to operate in.
+    func delete<T: Record>(_: T.Type, for id: String, with context: Context) async throws
 
     /// Search in the wallet for records of a specific type, optionally with a filter query and specific ranges.
     ///
     /// - Parameters:
     /// 	- type: The class of the record to be deleted
-    /// 	- wallet: The wallet to search in
+    ///     - context: The context to operate in.
     /// 	- query: The filter that should be applied. For no filter use ``SearchQuery/none``.
     ///		- count: The maximum amount of records to be fetched.
     ///		- skip: The amout of records to be skipped.
     func search<T: Record>(
         _: T.Type,
-        in wallet: Wallet,
-        with query: SearchQuery,
+        with context: Context,
+        matching query: SearchQuery,
         count: Int?,
         skip: Int?
     ) async throws -> [T]

@@ -15,16 +15,16 @@ import Foundation
 import Indy
 import IndyObjc
 
-class DefaultPoolService: PoolService {
-    func create(with name: String, _ genenis: String) async throws {
+public class DefaultPoolService: PoolService {
+    public func create(with name: String, _ genenis: String) async throws {
         try await Indy.Pool.create(with: name, genenis)
     }
     
-    func get(for name: String) async throws -> Pool {
+    public func get(for name: String) async throws -> Pool {
         try await Indy.Pool.open(with: name)
     }
     
-    func close(_ pool: Pool) async throws {
+    public func close(_ pool: Pool) async throws {
         guard let handle = pool as? IndyHandle else {
             throw AriesError.invalidType("Pool")
         }
@@ -32,7 +32,7 @@ class DefaultPoolService: PoolService {
         try await Indy.Pool.close(handle)
     }
     
-    func delete(for name: String) async throws {
+    public func delete(for name: String) async throws {
         try await Indy.Pool.delete(for: name)
     }
 }

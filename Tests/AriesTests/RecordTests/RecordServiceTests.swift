@@ -24,20 +24,24 @@ class RecordServiceTests: XCTestCase {
 		credentials: WalletCredentials(key: "test")
 	)
 
-	var wallet: Wallet!
+    var context: Context!
 	lazy var walletService = DefaultWalletService()
     lazy var recordService: RecordService = DefaultRecordService()
 
     override open func setUp() async throws {
         try await super.setUp()
         try await walletService.create(for: walletData)
-        wallet = try await walletService.get(for: walletData)
+        
+        context = Context(
+            wallet: try await walletService.get(for: walletData),
+            pool: Int32(0)
+        )
     }
 
     override open func tearDown() async throws {
-        try await walletService.close(wallet)
+        try await walletService.close(context.wallet)
         try await walletService.delete(for: walletData)
-        wallet = nil
+        context = nil
         try await super.tearDown()
     }
 
@@ -48,8 +52,8 @@ class RecordServiceTests: XCTestCase {
         let record = TestRecord(tags: [tagName: tagValue])
 
         // Act
-        try await recordService.add(record, to: wallet)
-        let retrieved = try await recordService.get(TestRecord.self, for: record.id, from: wallet)
+        try await recordService.add(record, with: context)
+        let retrieved = try await recordService.get(TestRecord.self, for: record.id, with: context)
 
         // Assert
         XCTAssertEqual(record.id, retrieved.id)
@@ -63,11 +67,11 @@ class RecordServiceTests: XCTestCase {
         let record = TestRecord(tags: [tagName: tagValue])
 
         // Act
-        try await recordService.add(record, to: wallet)
+        try await recordService.add(record, with: context)
         let search = try await recordService.search(
             TestRecord.self,
-            in: wallet,
-            with: .equal(name: tagName, value: tagValue),
+            with: context,
+            matching: .equal(name: tagName, value: tagValue),
             count: 100,
             skip: 0
         )
@@ -87,14 +91,14 @@ class RecordServiceTests: XCTestCase {
         let record = TestRecord(tags: [tagName: tagValue])
 
         // Act
-        try await recordService.add(record, to: wallet)
+        try await recordService.add(record, with: context)
 
-        var retrieved = try await recordService.get(TestRecord.self, for: record.id, from: wallet)
+        var retrieved = try await recordService.get(TestRecord.self, for: record.id, with: context)
         retrieved.tags[tagName] = tagValueNew
 
-        try await recordService.update(retrieved, in: wallet)
+        try await recordService.update(retrieved, with: context)
 
-        let updated = try await recordService.get(TestRecord.self, for: record.id, from: wallet)
+        let updated = try await recordService.get(TestRecord.self, for: record.id, with: context)
 
         // Assert
         XCTAssertEqual(record.id, updated.id)
@@ -104,7 +108,7 @@ class RecordServiceTests: XCTestCase {
 
     func test_retrieve_non_existent_record() async throws {
         do {
-            _ = try await recordService.get(TestRecord.self, for: UUID().uuidString, from: wallet)
+            _ = try await recordService.get(TestRecord.self, for: UUID().uuidString, with: context)
             XCTFail("Should not find any record for a random UUID in an empty wallet")
         } catch {}
     }
@@ -113,8 +117,8 @@ class RecordServiceTests: XCTestCase {
         // Act
         let result = try await recordService.search(
             TestRecord.self,
-            in: wallet,
-            with: .none,
+            with: context,
+            matching: .none,
             count: 100,
             skip: 0
         )
@@ -127,7 +131,7 @@ class RecordServiceTests: XCTestCase {
         var recordFirst = TestRecord()
         recordFirst.tags["~created"] = "\(recordFirst.created.toUInt64())"
         print(recordFirst)
-        try await recordService.add(recordFirst, to: wallet)
+        try await recordService.add(recordFirst, with: context)
 
         try await Task.sleep(nanoseconds: 1_000_000)
         let now = "\(Date().toUInt64())"
@@ -137,12 +141,12 @@ class RecordServiceTests: XCTestCase {
         var recordSecond = TestRecord()
         recordSecond.tags["~created"] = "\(recordSecond.created.toUInt64())"
         print(recordSecond)
-        try await recordService.add(recordSecond, to: wallet)
+        try await recordService.add(recordSecond, with: context)
 
         let result = try await recordService.search(
             TestRecord.self,
-            in: wallet,
-            with: .greater(name: "~created", value: now),
+            with: context,
+            matching: .greater(name: "~created", value: now),
             count: 100,
             skip: 0
         )
