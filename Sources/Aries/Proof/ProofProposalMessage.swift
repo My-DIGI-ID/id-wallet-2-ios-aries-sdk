@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// Message for proposing a proof.
 public struct ProofProposalMessage: Message {
     private enum CodingKeys: String, CodingKey {
         case id = "@id"
@@ -21,9 +22,13 @@ public struct ProofProposalMessage: Message {
         case preview = "presentation_proposal"
     }
     
+    /// The identifier of the message.
     public let id: String
+    /// The type of the message.
     public let type: String
+    /// A comment for human readable presentation.
     public var comment: String?
+    /// The preview of the proposed proof.
     public var preview: ProofPreview
     
     init(

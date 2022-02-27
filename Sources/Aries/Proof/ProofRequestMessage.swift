@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// Message for requesting a proof.
 public struct ProofRequestMessage: Message {
     private enum CodingKeys: String, CodingKey {
         case id = "@id"
@@ -21,9 +22,13 @@ public struct ProofRequestMessage: Message {
         case requests = "request_presentations~attach"
     }
     
+    /// The identifier of the message.
     public let id: String
+    /// The type of the message.
     public let type: String
+    /// A comment for human readable presentation.
     public var comment: String?
+    /// The proof request.
     public var requests: [AttachmentDecorator]
     
     init(id: String = UUID().uuidString) {

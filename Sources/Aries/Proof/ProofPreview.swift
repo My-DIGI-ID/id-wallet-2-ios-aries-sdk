@@ -13,6 +13,7 @@
 
 import Foundation
 
+/// Preview of all provable attributes and predicates
 public struct ProofPreview: Codable {
     private enum CodingKeys: String, CodingKey {
         case type = "@type"
@@ -20,8 +21,13 @@ public struct ProofPreview: Codable {
         case predicates
     }
     
+    /// The type identifier of the preview.
+    ///
+    /// Although this is isn't a message in itself, it is a closed object in terms of the RFC and requires its own type.
     public let type: String
+    /// The provable attributes.
     public var attributes: [String]
+    /// The provable predicates.
     public var predicates: [String]
     
     public init() {

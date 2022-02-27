@@ -13,13 +13,26 @@
 
 import Foundation
 
+/// Service for handling proofs.
 protocol ProofService {
+    /// Process a request for proof.
+    ///
+    /// - Parameter request: The proof request.
+    /// - Parameter connectionId: The identifier of the connection associated with the proof.
+    /// - Parameter context: The context to operate in.
+    /// - Returns: The identifier of the created proof record.
     func process(
         _ request: ProofRequestMessage,
         for connectionId: String,
         with context: Context
     ) async throws -> String
     
+    /// Create a proof presentation:
+    ///
+    /// - Parameter id: The identifier of the proof record.
+    /// - Parameter credentials: The credential to be proofed.
+    /// - Parameter context: The context to operate in.
+    /// - Returns: The message containing the presentation.
     func presentation(
         for id: String,
         containing credentials: String,
