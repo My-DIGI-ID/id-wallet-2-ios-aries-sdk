@@ -14,7 +14,7 @@ let package = Package(
 	dependencies: [
 		.package(
             name: "Indy",
-            url: "https://eu-de.git.cloud.ibm.com/blockchain-practice-dach/projects/ssi-bundeskanzleramt/id-wallet/ios-indy-sdk",
+            url: "git@github.com:My-DIGI-ID/id-wallet-2-ios-indy-sdk.git",
             branch: "development"
         )
 	],
