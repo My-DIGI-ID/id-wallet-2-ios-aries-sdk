@@ -35,6 +35,6 @@ public struct ProofPresentationMesssage {
         self.id = id
         self.type = ""
         self.comment = nil
-        self.requests = []
+        self.presentations = []
     }
 }

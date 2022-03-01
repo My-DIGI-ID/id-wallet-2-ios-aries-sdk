@@ -35,7 +35,7 @@ public struct AckMessage: Message {
     init(
         id: String = UUID().uuidString,
         type: String = MessageType.ack.rawValue,
-        status: AckStatus = .ok
+        status: Status = .ok
     ) {
         self.id = id
         self.type = type
